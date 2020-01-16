@@ -1,14 +1,18 @@
 package com.example.layouts;
 
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
-import android.support.annotation.NonNull;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = findViewById(R.id.message);
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         heroList = new ArrayList<>();
-        listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.bubu);
 
         heroList.add(new Hero(R.drawable.tequila, "Spiderman", "Avengers"));
         heroList.add(new Hero(R.drawable.drinks, "Joker", "Injustice Gang"));
