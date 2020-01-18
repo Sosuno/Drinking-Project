@@ -3,4 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="exemplary_txt">Tequila</string>
+    <string name="drinkImg_content_description">Drink Img</string>
+    <string name="imgButton_content_description">Click me and i will be filled</string>
 </resources>
