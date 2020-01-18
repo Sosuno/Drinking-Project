@@ -8,12 +8,12 @@
 
     <ImageView
         android:id="@+id/loginImg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="211dp"
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars[2]" />
+        tools:srcCompat="@drawable/henlo" />
 
     <EditText
         android:id="@+id/emailEditText"
