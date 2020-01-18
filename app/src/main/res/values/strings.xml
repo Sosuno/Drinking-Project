@@ -10,4 +10,10 @@
     <string name="discover">Discover</string>
     <string name="favourites">My Recipes</string>
     <string name="ingredients">Ingredients</string>
+    <string name="recipeTitle">Recipe</string>
+    <string name="recipe">Exemplary recipe hsfshfnjdfjdjffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</string>
+    <string name="glassTitle">Glass Type</string>
+    <string name="glass">champagne glass</string>
+    <string name="DescriptionTitle">Description</string>
+    <string name="exemplary_description">cool description here</string>
 </resources>
