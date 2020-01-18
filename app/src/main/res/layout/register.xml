@@ -2,15 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
+    android:id="@+id/register_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/loginImg"
         android:layout_width="0dp"
-        android:layout_height="211dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="195dp"
+        android:layout_marginTop="52dp"
+        android:contentDescription="@string/RegisterImg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/henlo" />
@@ -23,9 +24,11 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="64dp"
+        android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loginImg" />
+        app:layout_constraintTop_toBottomOf="@id/loginImg"
+        tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/emailTextView"
@@ -46,10 +49,12 @@
         android:layout_gravity="fill_horizontal"
 
         android:layout_marginTop="44dp"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:maxLength="6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emailTextView" />
+        app:layout_constraintTop_toBottomOf="@id/emailTextView"
+        tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/usernameTextView"
@@ -68,10 +73,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="fill_horizontal"
         android:layout_marginTop="44dp"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
         android:maxLength="6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/usernameTextView" />
+        app:layout_constraintTop_toBottomOf="@id/usernameTextView"
+        tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/passwordTextView"
@@ -90,10 +97,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="fill_horizontal"
         android:layout_marginTop="44dp"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
         android:maxLength="6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordTextView" />
+        app:layout_constraintTop_toBottomOf="@id/passwordTextView"
+        tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/password2TextView"
@@ -110,13 +119,13 @@
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="168dp"
-        android:layout_marginLeft="168dp"
-        android:layout_marginTop="52dp"
-        android:text="@string/Register"
+        android:layout_marginStart="172dp"
+        android:layout_marginLeft="172dp"
+        android:layout_marginTop="40dp"
         android:background="@color/colorPrimary"
+        android:text="@string/Register"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password2TextView"
-        android:textColor="@color/white"/>
+        app:layout_constraintTop_toBottomOf="@id/password2TextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
