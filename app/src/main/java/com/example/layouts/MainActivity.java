@@ -4,12 +4,14 @@ import android.os.Bundle;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -19,7 +21,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
-    private ConstraintLayout home_layout;
+    private RelativeLayout list_of_all;
+    private RelativeLayout recipe;
+
     List<Hero> heroList;
     ListView listView;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -29,16 +33,19 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    //home_layout = findViewById(R.id.home_layout);
-                    home_layout.setVisibility(View.VISIBLE);
+                    mTextMessage.setText(R.string.discover);
+                    list_of_all = findViewById(R.id.list_of_all);
+                    list_of_all.setVisibility(View.VISIBLE);
+                    recipe.setVisibility(View.INVISIBLE);
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                    mTextMessage.setText(R.string.favourites);
+                    recipe = findViewById(R.id.recipe);
+                    list_of_all = findViewById(R.id.list_of_all);
+                    recipe.setVisibility(View.VISIBLE);
+                    list_of_all.setVisibility(View.INVISIBLE);
                     return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
+
             }
             return false;
         }
@@ -57,6 +64,12 @@ public class MainActivity extends AppCompatActivity {
         heroList.add(new Hero(R.drawable.tequila, "Spiderman", "Avengers"));
         heroList.add(new Hero(R.drawable.drinks, "Joker", "Injustice Gang"));
         heroList.add(new Hero(R.drawable.hhhhh, "Iron Man", "Avengers"));
+        heroList.add(new Hero(R.drawable.whiskysour, "Doctor Strange", "Avengers"));
+        heroList.add(new Hero(R.drawable.whiskysour, "Doctor Strange", "Avengers"));
+        heroList.add(new Hero(R.drawable.whiskysour, "Doctor Strange", "Avengers"));
+        heroList.add(new Hero(R.drawable.whiskysour, "Doctor Strange", "Avengers"));
+        heroList.add(new Hero(R.drawable.whiskysour, "Doctor Strange", "Avengers"));
+        heroList.add(new Hero(R.drawable.whiskysour, "Doctor Strange", "Avengers"));
         heroList.add(new Hero(R.drawable.whiskysour, "Doctor Strange", "Avengers"));
 
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/list_of_all"
     >
 
     <TextView
@@ -40,7 +41,7 @@
 
     <ImageButton
         android:id="@+id/favourites_Button"
-        android:layout_width="match_parent"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imageView"
         android:layout_centerHorizontal="false"
@@ -52,6 +53,19 @@
         android:background="#FFFFFF"
         android:contentDescription="@string/imgButton_content_description"
         android:src="@drawable/favourites_state" />
+
+    <Button
+        android:id="@+id/buttonSeeMore"
+        android:layout_width="152dp"
+        android:layout_height="33dp"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
+        android:layout_marginBottom="8dp"
+        android:layout_toEndOf="@+id/imageView"
+        android:layout_toRightOf="@+id/imageView"
+        android:background="@color/colorPrimary"
+        android:text="@string/see_more" />
 
     <!-- <Button
          android:id="@+id/buttonDelete"

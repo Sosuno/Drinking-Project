@@ -6,4 +6,8 @@
     <string name="exemplary_txt">Tequila</string>
     <string name="drinkImg_content_description">Drink Img</string>
     <string name="imgButton_content_description">Click me and i will be filled</string>
+    <string name="see_more">Check me out</string>
+    <string name="discover">Discover</string>
+    <string name="favourites">My Recipes</string>
+    <string name="ingredients">Ingredients</string>
 </resources>

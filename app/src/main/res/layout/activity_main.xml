@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/bubu1"
     >
 
     <ListView
@@ -22,6 +23,8 @@
         app:menu="@menu/bottom_nav_menu"
         app:itemBackground="@color/colorPrimary"
         app:itemIconTint="@android:color/white"
-        app:itemTextColor="@android:color/white" />
+        app:itemTextColor="@android:color/white"
+        android:background="@color/colorPrimary"
+         />
 
 </RelativeLayout>
