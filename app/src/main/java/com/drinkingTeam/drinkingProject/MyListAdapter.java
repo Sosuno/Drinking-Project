@@ -1,9 +1,14 @@
-package com.example.layouts;
+package com.drinkingTeam.drinkingProject;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import android.annotation.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,10 +29,10 @@ import java.util.List;
  */
 
 //we need to extend the ArrayAdapter class as we are building an adapter
-public class MyListAdapter extends ArrayAdapter<Hero> {
+public class MyListAdapter extends ArrayAdapter<Drink> {
 
     //the list values in the List of type hero
-    List<Hero> heroList;
+    List<Drink> heroList;
 
     //activity context
     Context context;
@@ -34,7 +41,7 @@ public class MyListAdapter extends ArrayAdapter<Hero> {
     int resource;
 
     //constructor initializing the values
-    public MyListAdapter(Context context, int resource, List<Hero> heroList) {
+    public MyListAdapter(Context context, int resource, List<Drink> heroList) {
         super(context, resource, heroList);
         this.context = context;
         this.resource = resource;
@@ -60,12 +67,14 @@ public class MyListAdapter extends ArrayAdapter<Hero> {
         Button buttonDelete = view.findViewById(R.id.buttonDelete);
 
         //getting the hero of the specified position
-        Hero hero = heroList.get(position);
+        Drink hero = heroList.get(position);
 
-        //adding values to the list item
-        imageView.setImageDrawable(context.getResources().getDrawable(hero.getImage()));
+        byte[] base64converted = Base64.decode(hero.getImage(), Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(base64converted, 0, base64converted.length);
+
+        imageView.setImageBitmap(bitmap);
         textViewName.setText(hero.getName());
-        textViewTeam.setText(hero.getTeam());
+        textViewTeam.setText(hero.getId()+"");
 
         //adding a click listener to the button to remove item from the list
         buttonDelete.setOnClickListener(new View.OnClickListener() {
