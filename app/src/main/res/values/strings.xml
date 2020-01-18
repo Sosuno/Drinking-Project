@@ -16,4 +16,9 @@
     <string name="glass">champagne glass</string>
     <string name="DescriptionTitle">Description</string>
     <string name="exemplary_description">cool description here</string>
+    <string name="enter_email">Enter email</string>
+    <string name="enter_username">Enter username</string>
+    <string name="enter_password">Enter password</string>
+    <string name="enter_password_2">Repeat password</string>
+    <string name="Register">Register</string>
 </resources>
