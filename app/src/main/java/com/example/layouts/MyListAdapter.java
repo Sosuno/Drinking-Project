@@ -57,7 +57,7 @@ public class MyListAdapter extends ArrayAdapter<Hero> {
         ImageView imageView = view.findViewById(R.id.imageView);
         TextView textViewName = view.findViewById(R.id.textViewName);
         TextView textViewTeam = view.findViewById(R.id.textViewTeam);
-        Button buttonDelete = view.findViewById(R.id.buttonDelete);
+        //Button buttonDelete = view.findViewById(R.id.buttonDelete);
 
         //getting the hero of the specified position
         Hero hero = heroList.get(position);
@@ -68,14 +68,14 @@ public class MyListAdapter extends ArrayAdapter<Hero> {
         textViewTeam.setText(hero.getTeam());
 
         //adding a click listener to the button to remove item from the list
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
+        /*buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //we will call this method to remove the selected value from the list
                 //we are passing the position which is to be removed in the method
                 removeHero(position);
             }
-        });
+        });*/
 
         //finally returning the view
         return view;
