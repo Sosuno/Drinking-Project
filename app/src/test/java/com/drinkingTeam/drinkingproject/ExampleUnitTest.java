@@ -1,4 +1,4 @@
-package com.example.drinkingproject;
+package com.drinkingTeam.drinkingproject;
 
 import org.junit.Test;
 
