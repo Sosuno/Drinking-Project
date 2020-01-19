@@ -62,7 +62,6 @@ public class DrinkService {
         Long id = repo.save(drinkEntity).getId();
 
         Ingredient i1 = new Ingredient("Gin","60","ml", id);
-
         Ingredient i2 = new Ingredient("Freshly squeezed lemon juice ","30","ml", id);
         Ingredient i4 = new Ingredient("Crème de mure","15","ml", id);
         Ingredient i3 = new Ingredient("Simple syrup","2","barspoons", id);
@@ -71,6 +70,35 @@ public class DrinkService {
         ingredientRepository.save(i2);
         ingredientRepository.save(i4);
         ingredientRepository.save(i3);
-        Long[] ingredients = new Long[] {i1.getId(),i2.getId(),i3.getId(),i4.getId()};
+
+        name = "Spazerac";
+        recipe  = "\n" +
+                "\n" +
+                "Add all the ingredients to a blender with just under 1 cup of ice.\n" +
+                "\n" +
+                "Blend until smooth and pour into an Old Fashioned glass.\n" +
+                "\n" +
+                "Garnish with a lemon twist.";
+        desc = "Try this unusual frozen spin on the classic Sazerac.";
+        glass = "Old Fashioned";
+
+        drinkEntity = new DrinkEntity(name,desc,recipe,glass);
+        is = getClass().getResourceAsStream("/images/spazerac.jpg");
+
+        bytes = IOUtils.toByteArray(is);
+        drinkEntity.setImage(bytes);
+        id = repo.save(drinkEntity).getId();
+        i1 = new Ingredient("Rye whiskey","75","ml", id);
+        i2 = new Ingredient("Lemon juice ","7.5","ml", id);
+        i4 = new Ingredient("Peychaud's bitters","3","dashes", id);
+        i3 = new Ingredient("Simple syrup","15","ml", id);
+        Ingredient i5 = new Ingredient("Absinthe","1","tsp", id);
+
+        ingredientRepository.save(i1);
+        ingredientRepository.save(i2);
+        ingredientRepository.save(i4);
+        ingredientRepository.save(i3);
+        ingredientRepository.save(i5);
+
     }
 }
