@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView mTextMessage;
+
     private RelativeLayout list_of_all;
     private RelativeLayout recipe;
-
+    MyListAdapter adapter;
     List<Hero> heroList;
     ListView listView;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -31,20 +31,27 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            list_of_all = (RelativeLayout) findViewById(R.id.list_of_all);
+            recipe = (RelativeLayout) findViewById(R.id.recipe);
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.discover);
-                    list_of_all = findViewById(R.id.list_of_all);
-                    list_of_all.setVisibility(View.VISIBLE);
-                    recipe.setVisibility(View.INVISIBLE);
+                    list_of_all = (RelativeLayout) findViewById(R.id.list_of_all);
+                    adapter.setHeroList(heroList);
+                    listView.setAdapter(adapter);
+                    System.out.println(recipe);
+                  //  list_of_all.setVisibility(View.VISIBLE);
+                    //recipe.setVisibility(View.INVISIBLE);
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.favourites);
-                    recipe = findViewById(R.id.recipe);
-                    list_of_all = findViewById(R.id.list_of_all);
-                    recipe.setVisibility(View.VISIBLE);
-                    list_of_all.setVisibility(View.INVISIBLE);
-                    return true;
+
+                    //recipe = findViewById(R.id.recipe);
+                    System.out.println(recipe);
+                    adapter.setHeroList(new ArrayList<Hero>());
+                    listView.setAdapter(adapter);
+                    System.out.println(list_of_all);
+                   // list_of_all.setVisibility(View.INVISIBLE);
+                    //recipe.setVisibility(View.VISIBLE);
+
 
             }
             return false;
@@ -55,8 +62,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        mTextMessage = findViewById(R.id.message);
+        BottomNavigationView navView = findViewById(R.id.bottom_navigation);
+        System.out.println(navView);
+
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         heroList = new ArrayList<>();
         listView = (ListView) findViewById(R.id.bubu);
@@ -72,12 +80,13 @@ public class MainActivity extends AppCompatActivity {
         heroList.add(new Hero(R.drawable.whiskysour, "Doctor Strange", "Avengers"));
         heroList.add(new Hero(R.drawable.whiskysour, "Doctor Strange", "Avengers"));
 
-
-        //creating the adapter
-        MyListAdapter adapter = new MyListAdapter(this, R.layout.my_custom_list, heroList);
+        adapter = new MyListAdapter(this, R.layout.my_custom_list, heroList);
 
         //attaching adapter to the listview
         listView.setAdapter(adapter);
+
+        //creating the adapter
+
     }
 
 }

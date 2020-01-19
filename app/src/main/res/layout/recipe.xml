@@ -23,7 +23,7 @@
         android:src="@drawable/favourites_state" />
 
     <TextView
-        android:id="@+id/textViewName"
+        android:id="@+id/textViewDrinkName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
@@ -36,7 +36,7 @@
         android:id="@+id/drinkImg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewName"
+        android:layout_below="@id/textViewDrinkName"
 
         android:contentDescription="@string/drinkImg_content_description" />
 

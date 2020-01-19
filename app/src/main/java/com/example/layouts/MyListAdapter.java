@@ -52,6 +52,7 @@ public class MyListAdapter extends ArrayAdapter<Hero> {
 
         //getting the view
         View view = layoutInflater.inflate(resource, null, false);
+        if(heroList.size() < 1) return new View(context);
 
         //getting the view elements of the list from the view
         ImageView imageView = view.findViewById(R.id.imageView);
@@ -111,5 +112,9 @@ public class MyListAdapter extends ArrayAdapter<Hero> {
         //creating and displaying the alert dialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void setHeroList(List<Hero> heroList) {
+        this.heroList = heroList;
     }
 }
