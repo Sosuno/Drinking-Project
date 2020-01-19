@@ -6,18 +6,13 @@ import android.content.DialogInterface;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import android.annotation.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +27,7 @@ import java.util.List;
 public class MyListAdapter extends ArrayAdapter<Drink> {
 
     //the list values in the List of type hero
-    List<Drink> heroList;
+    List<Drink> drinkList;
 
     //activity context
     Context context;
@@ -40,12 +35,14 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
     //the layout resource file for the list items
     int resource;
 
+    int error;
+
     //constructor initializing the values
-    public MyListAdapter(Context context, int resource, List<Drink> heroList) {
-        super(context, resource, heroList);
+    public MyListAdapter(Context context, int resource, List<Drink> drinkList) {
+        super(context, resource, drinkList);
         this.context = context;
         this.resource = resource;
-        this.heroList = heroList;
+        this.drinkList = drinkList;
     }
 
     //this will return the ListView Item as a View
@@ -53,22 +50,19 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        //we need to get the view of the xml for our list item
-        //And for this we need a layoutinflater
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
-        //getting the view
         View view = layoutInflater.inflate(resource, null, false);
-        if(heroList.size() < 1) return new View(context);
 
-        //getting the view elements of the list from the view
+        if(drinkList.size() < 1) return new View(context);
+
         ImageView imageView = view.findViewById(R.id.imageView);
         TextView textViewName = view.findViewById(R.id.textViewName);
         TextView textViewTeam = view.findViewById(R.id.textViewTeam);
-        //Button buttonDelete = view.findViewById(R.id.buttonDelete);
 
-        //getting the hero of the specified position
-        Drink hero = heroList.get(position);
+        System.out.println("position :  " + position);
+        System.out.println("size :  " + drinkList.size());
+        Drink hero = drinkList.get(position);
 
         byte[] base64converted = Base64.decode(hero.getImage(), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(base64converted, 0, base64converted.length);
@@ -76,18 +70,6 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         imageView.setImageBitmap(bitmap);
         textViewName.setText(hero.getName());
         textViewTeam.setText(hero.getId()+"");
-
-        //adding a click listener to the button to remove item from the list
-        /*buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //we will call this method to remove the selected value from the list
-                //we are passing the position which is to be removed in the method
-                removeHero(position);
-            }
-        });*/
-
-        //finally returning the view
         return view;
     }
 
@@ -103,7 +85,7 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 //removing the item
-                heroList.remove(position);
+                drinkList.remove(position);
 
                 //reloading the list
                 notifyDataSetChanged();
@@ -123,7 +105,8 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         alertDialog.show();
     }
 
-    public void setHeroList(List<Drink> heroList) {
-        this.heroList = heroList;
+    public void setDrinkList(List<Drink> drinkList) {
+        this.drinkList = drinkList;
     }
+
 }

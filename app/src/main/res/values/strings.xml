@@ -22,4 +22,7 @@
     <string name="enter_password_2">Repeat password</string>
     <string name="Register">Register</string>
     <string name="RegisterImg">Henlo very much</string>
+
+    <string name="no_connection">Oops... We couldn\'t contact with server. But no worry. You still can browse your favourite drinks</string>
+    <string name="no_favourites">You don\'t have any favourites. Please add some. </string>
 </resources>

@@ -1,5 +1,7 @@
 package com.drinkingTeam.drinkingProject;
 
+import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
+
 import java.util.List;
 
 public class Drink {
@@ -13,6 +15,7 @@ public class Drink {
     private List<Ingredient> ingredients;
 
     public Drink() {}
+
     public Drink(Long id, String name, String description, String recipe, String image, String glass, List<Ingredient> ingredients) {
         this.id = id;
         this.name = name;
@@ -21,6 +24,15 @@ public class Drink {
         this.image = image;
         this.glass = glass;
         this.ingredients = ingredients;
+    }
+    public Drink(DrinkEntity d) {
+        this.id = d.getId();
+        this.name = d.getName();
+        this.description = d.getDescription();
+        this.recipe = d.getRecipe();
+        this.image = d.getImage();
+        this.glass = d.getGlass();
+
     }
 
     public Long getId() {

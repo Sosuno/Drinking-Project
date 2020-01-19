@@ -7,6 +7,13 @@
     android:id="@+id/bubu1"
     >
 
+    <TextView
+        android:id="@+id/error_msg"
+        android:layout_width="match_parent"
+        android:layout_height="347dp"
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_marginBottom="325dp" />
+
     <ListView
         android:id="@+id/bubu"
         android:layout_width="match_parent"
@@ -26,6 +33,9 @@
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
         android:background="@color/colorPrimary"
-         />
+         >
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
 
 </RelativeLayout>
