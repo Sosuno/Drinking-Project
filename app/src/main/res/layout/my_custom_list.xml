@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="15dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:id="@+id/list_of_all"
+    >
 
     <TextView
         android:id="@+id/textViewName"
@@ -13,15 +15,16 @@
         android:layout_toEndOf="@+id/imageView"
         android:layout_toRightOf="@+id/imageView"
         android:paddingBottom="10dp"
-        android:text="Tequila"
+        android:text="@string/exemplary_txt"
         android:textAlignment="center"
-        android:textSize="35dp"
+        android:textSize="35sp"
         android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="150dp"
-        android:layout_height="150dp" />
+        android:layout_height="150dp"
+        android:contentDescription="@string/drinkImg_content_description" />
 
     <TextView
         android:id="@+id/textViewTeam"
@@ -31,20 +34,49 @@
         android:layout_toEndOf="@+id/imageView"
         android:layout_toRightOf="@+id/imageView"
         android:paddingTop="10dp"
-        android:text="Tequila"
+        android:text="@string/exemplary_txt"
         android:textAlignment="center"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/buttonDelete"
-        android:layout_width="match_parent"
+    <ImageButton
+        android:id="@+id/favourites_Button"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imageView"
+        android:layout_centerHorizontal="false"
+        android:layout_marginStart="23dp"
+        android:layout_marginLeft="23dp"
+        android:layout_marginBottom="13dp"
         android:layout_toEndOf="@+id/imageView"
         android:layout_toRightOf="@+id/imageView"
-        android:background="#FF0000"
-         />
+        android:background="#FFFFFF"
+        android:contentDescription="@string/imgButton_content_description"
+        android:src="@drawable/favourites_state" />
+
+    <Button
+        android:id="@+id/buttonSeeMore"
+        android:layout_width="152dp"
+        android:layout_height="33dp"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
+        android:layout_marginBottom="8dp"
+        android:layout_toEndOf="@+id/imageView"
+        android:layout_toRightOf="@+id/imageView"
+        android:background="@color/colorPrimary"
+        android:text="@string/see_more"
+        android:textColor="@color/white"/>
+
+    <!-- <Button
+         android:id="@+id/buttonDelete"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/imageView"
+         android:layout_toEndOf="@+id/imageView"
+         android:layout_toRightOf="@+id/imageView"
+         android:background="@color/colorPrimary"
+          />-->
 
 
 </RelativeLayout>

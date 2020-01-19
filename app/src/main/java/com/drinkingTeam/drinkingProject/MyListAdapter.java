@@ -59,12 +59,13 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
 
         //getting the view
         View view = layoutInflater.inflate(resource, null, false);
+        if(heroList.size() < 1) return new View(context);
 
         //getting the view elements of the list from the view
         ImageView imageView = view.findViewById(R.id.imageView);
         TextView textViewName = view.findViewById(R.id.textViewName);
         TextView textViewTeam = view.findViewById(R.id.textViewTeam);
-        Button buttonDelete = view.findViewById(R.id.buttonDelete);
+        //Button buttonDelete = view.findViewById(R.id.buttonDelete);
 
         //getting the hero of the specified position
         Drink hero = heroList.get(position);
@@ -77,14 +78,14 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         textViewTeam.setText(hero.getId()+"");
 
         //adding a click listener to the button to remove item from the list
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
+        /*buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //we will call this method to remove the selected value from the list
                 //we are passing the position which is to be removed in the method
                 removeHero(position);
             }
-        });
+        });*/
 
         //finally returning the view
         return view;
@@ -120,5 +121,9 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         //creating and displaying the alert dialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void setHeroList(List<Drink> heroList) {
+        this.heroList = heroList;
     }
 }

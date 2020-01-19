@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -34,10 +35,11 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-    private TextView mTextMessage;
-    private ConstraintLayout home_layout;
+
+
     private List<Drink> drinks = new ArrayList<>();
     private final static String HOST = "192.168.0.38:8080";
+    private MyListAdapter adapter;
     ListView listView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -47,15 +49,12 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    //home_layout = findViewById(R.id.home_layout);
-                    home_layout.setVisibility(View.VISIBLE);
+                    adapter.setHeroList(drinks);
+                    listView.setAdapter(adapter);
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                    adapter.setHeroList(new ArrayList<Drink>());
+                    listView.setAdapter(adapter);
                     return true;
             }
             return false;
@@ -67,11 +66,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        //BottomNavigationView navView = findViewById(R.id.bottom);
-        mTextMessage = findViewById(R.id.message);
-        //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        BottomNavigationView navView = findViewById(R.id.bottom_navigation);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         listView = (ListView) findViewById(R.id.bubu);
-
 
         drinks = getDrinks(this);
     }
@@ -117,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                                 drink.setIngredients(ingredients);
                                 addToDrinks(drink);
                             }
-                            MyListAdapter adapter = new MyListAdapter(context, R.layout.my_custom_list, drinks);
+                            adapter = new MyListAdapter(context, R.layout.my_custom_list, drinks);
                             listView.setAdapter(adapter);
 
                         } catch (JSONException e) {
