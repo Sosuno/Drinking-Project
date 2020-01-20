@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,21 +28,23 @@ import java.util.List;
 public class MyListAdapter extends ArrayAdapter<Drink> {
 
     //the list values in the List of type hero
-    List<Drink> drinkList;
+    private List<Drink> drinkList;
+    private List<Drink> favsList;
 
     //activity context
-    Context context;
+    private Context context;
 
     //the layout resource file for the list items
-    int resource;
+    private int resource;
 
 
     //constructor initializing the values
-    public MyListAdapter(Context context, int resource, List<Drink> drinkList) {
+    public MyListAdapter(Context context, int resource, List<Drink> drinkList, List<Drink> favs) {
         super(context, resource, drinkList);
         this.context = context;
         this.resource = resource;
         this.drinkList = drinkList;
+        this.favsList = favs;
     }
 
     //this will return the ListView Item as a View
@@ -51,23 +54,31 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
+
         View view = layoutInflater.inflate(resource, null, false);
 
         if(drinkList.size() < 1) return new View(context);
+
+
 
         ImageView imageView = view.findViewById(R.id.imageView);
         TextView textViewName = view.findViewById(R.id.textViewName);
         TextView textViewTeam = view.findViewById(R.id.textViewTeam);
 
 
-        Drink hero = drinkList.get(position);
+        Drink drink = drinkList.get(position);
 
-        byte[] base64converted = Base64.decode(hero.getImage(), Base64.DEFAULT);
+        if(checkIfIsFavourite(drink,favsList)) {
+            ImageButton imageButton = view.findViewById(R.id.favourites_Button);
+            imageButton.setActivated(true);
+        }
+
+        byte[] base64converted = Base64.decode(drink.getImage(), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(base64converted, 0, base64converted.length);
 
         imageView.setImageBitmap(bitmap);
-        textViewName.setText(hero.getName());
-        textViewTeam.setText(hero.getId()+"");
+        textViewName.setText(drink.getName());
+        textViewTeam.setText(drink.getId()+"");
         return view;
     }
 
@@ -105,6 +116,13 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
 
     public void setDrinkList(List<Drink> drinkList) {
         this.drinkList = drinkList;
+    }
+
+    public boolean checkIfIsFavourite(Drink drinks, List<Drink> favs) {
+        for (Drink d:favs) {
+            if(d.getName().equals(drinks.getName())) return true;
+        }
+        return false;
     }
 
 }

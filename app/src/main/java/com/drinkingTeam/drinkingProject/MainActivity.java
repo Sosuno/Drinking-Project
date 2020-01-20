@@ -95,12 +95,12 @@ public class MainActivity extends AppCompatActivity {
         drinkDb = new DrinksDbHelper(this);
         ingredientsDb = new IngredientsDbHelper(this);
 
-        adapter2 = new MyListAdapter(this, R.layout.my_custom_list, favdrinks);
+        adapter2 = new MyListAdapter(this, R.layout.my_custom_list, favdrinks,favdrinks);
         err = findViewById(R.id.error_msg);
         listView = (ListView) findViewById(R.id.bubu);
         err = (TextView) this.findViewById(R.id.error_msg);
         noError();
-        adapter = new MyListAdapter(this, R.layout.my_custom_list, drinks);
+        adapter = new MyListAdapter(this, R.layout.my_custom_list, drinks,favdrinks);
         drinks = getDrinks();
 
 
