@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
                 mQueue.cancelAll(TAG);
                 if(drinks.size() == 0) {
                     error(R.string.no_connection);
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     private void error(int e) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(e);
-        builder.setPositiveButton("OK :(", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.confirm_dialog, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 

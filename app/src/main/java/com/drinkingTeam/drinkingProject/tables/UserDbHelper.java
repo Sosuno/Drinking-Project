@@ -2,10 +2,17 @@ package com.drinkingTeam.drinkingProject.tables;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.drinkingTeam.drinkingProject.entities.UserEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.drinkingTeam.drinkingProject.tables.UserReaderContract.UserTable.*;
+import static com.drinkingTeam.drinkingProject.tables.UserReaderContract.UserTable.TABLE_NAME;
 
 public class UserDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 2;
@@ -28,28 +35,54 @@ public class UserDbHelper extends SQLiteOpenHelper {
 
 
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + UserReaderContract.UserTable.TABLE_NAME + " (" +
-                    UserReaderContract.UserTable._ID + " INTEGER PRIMARY KEY," +
-                    UserReaderContract.UserTable.COLUMN_NAME_USERNAME + " TEXT," +
-                    UserReaderContract.UserTable.COLUMN_NAME_PASSWORD + " TEXT," +
-                    UserReaderContract.UserTable.COLUMN_NAME_EMAIL + " TEXT )";
+            "CREATE TABLE " + TABLE_NAME + " (" +
+                    _ID + " INTEGER PRIMARY KEY," +
+                    COLUMN_NAME_USERNAME + " TEXT," +
+                    COLUMN_NAME_PASSWORD + " TEXT," +
+                    COLUMN_NAME_EMAIL + " TEXT )";
 
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + IngredientsReaderContract.IngredientsTable.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    public Long addToIngredients(SQLiteDatabase db, UserEntity userEntity){
+    public Long addUser(SQLiteDatabase db, UserEntity userEntity){
 
         ContentValues values = new ContentValues();
-        values.put(UserReaderContract.UserTable.COLUMN_NAME_USERNAME, userEntity.getUsername());
-        values.put(UserReaderContract.UserTable.COLUMN_NAME_PASSWORD, userEntity.getPassword());
-        values.put(UserReaderContract.UserTable.COLUMN_NAME_EMAIL, userEntity.getEmail());
-        return db.insert(DrinksReaderContract.DrinksTable.TABLE_NAME,null,values);
+        values.put(COLUMN_NAME_USERNAME, userEntity.getUsername());
+        values.put(COLUMN_NAME_PASSWORD, userEntity.getPassword());
+        values.put(COLUMN_NAME_EMAIL, userEntity.getEmail());
+        return db.insert(TABLE_NAME,null,values);
     }
 
-    public int removeUser(SQLiteDatabase db ,long id) {
-        String selection = UserReaderContract.UserTable._ID + " = ?";
+    public void removeUser(SQLiteDatabase db ,long id) {
+        String selection = _ID + " = ?";
         String[] selectionArgs = { id+"" };
-        return db.delete(UserReaderContract.UserTable.TABLE_NAME,selection,selectionArgs);
+        db.execSQL("delete from "+ TABLE_NAME);
     }
 
+    public List<UserEntity> getUser(SQLiteDatabase db){
+        String[] projection = {
+                COLUMN_NAME_USERNAME,
+                COLUMN_NAME_PASSWORD,
+                COLUMN_NAME_EMAIL
+        };
+        Cursor cursor = db.query(
+                TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        List<UserEntity> ingredients = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            String username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_USERNAME));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_PASSWORD));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_EMAIL));
+
+            ingredients.add(new UserEntity(null, username,password,email));
+        }
+        cursor.close();
+        return ingredients;
+    }
 }
