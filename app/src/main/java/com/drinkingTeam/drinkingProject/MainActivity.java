@@ -1,19 +1,18 @@
 package com.drinkingTeam.drinkingProject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -188,9 +187,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void error(int e) {
-        err.setText(e);
-        listView.setVisibility(View.INVISIBLE);
-        err.setVisibility(View.VISIBLE);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(e);
+        builder.setPositiveButton("OK :(", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        //creating and displaying the alert dialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void noError() {
