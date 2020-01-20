@@ -14,7 +14,7 @@
         android:contentDescription="@string/RegisterImg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/henlo" />
+        app:srcCompat="@drawable/henlo" />
 
     <EditText
         android:id="@+id/emailEditText"

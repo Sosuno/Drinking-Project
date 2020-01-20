@@ -29,5 +29,8 @@
     <string name="login_err_clean">You have to fill both fields</string>
     <string name="confirm_dialog"> OK :(</string>
 
-    <string name="secret_password"></string>
+    <string name="password_no_match">Passwords don\'t match</string>
+    <string name="email_not_valid">Please enter valid email</string>
+    <string name="password_regex">You have to use at least one character and number in your password</string>
+    <string name="empty_fields">You need to fill all fields</string>
 </resources>
