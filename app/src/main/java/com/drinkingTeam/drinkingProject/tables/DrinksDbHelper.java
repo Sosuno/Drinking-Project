@@ -47,12 +47,14 @@ public class DrinksDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DrinksReaderContract.DrinksTable.TABLE_NAME;
 
-    public long addToFavourites(SQLiteDatabase db, DrinkEntity drinkEntity){
+    public Long addToFavourites(SQLiteDatabase db, DrinkEntity drinkEntity){
 
         ContentValues values = new ContentValues();
         values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_NAME, drinkEntity.getName());
         values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_IMAGE, drinkEntity.getImage());
         values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_RECIPE, drinkEntity.getRecipe());
+        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_GLASS, drinkEntity.getGlass());
+        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_DESCRIPTION, drinkEntity.getDescription());
         return db.insert(DrinksReaderContract.DrinksTable.TABLE_NAME,null,values);
     }
 
@@ -83,7 +85,7 @@ public class DrinksDbHelper extends SQLiteOpenHelper {
         );
         List<DrinkEntity> drinks = new ArrayList<>();
         while(cursor.moveToNext()) {
-            long drinkId = cursor.getLong(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable._ID));
+            Long drinkId = cursor.getLong(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable._ID));
             String drinkName = cursor.getString(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable.COLUMN_NAME_NAME));
             String image = cursor.getString(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable.COLUMN_NAME_IMAGE));
             String recipe = cursor.getString(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable.COLUMN_NAME_RECIPE));

@@ -1,20 +1,9 @@
 package com.drinkingTeam.drinkingProject.entities;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
-
 import com.drinkingTeam.drinkingProject.Drink;
-import com.drinkingTeam.drinkingProject.tables.DrinksReaderContract;
-import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DrinkEntity {
-    private long id;
+    private Long id;
     private String name;
     private String image;
     private String recipe;
@@ -23,7 +12,7 @@ public class DrinkEntity {
 
     public DrinkEntity() {}
 
-    public DrinkEntity(long id, String name,String image, String recipe, String description, String glass) {
+    public DrinkEntity(Long id, String name,String image, String recipe, String description, String glass) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -57,11 +46,11 @@ public class DrinkEntity {
         this.recipe = recipe;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

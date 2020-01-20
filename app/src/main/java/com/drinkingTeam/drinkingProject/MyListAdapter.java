@@ -35,7 +35,6 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
     //the layout resource file for the list items
     int resource;
 
-    int error;
 
     //constructor initializing the values
     public MyListAdapter(Context context, int resource, List<Drink> drinkList) {
@@ -60,8 +59,7 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         TextView textViewName = view.findViewById(R.id.textViewName);
         TextView textViewTeam = view.findViewById(R.id.textViewTeam);
 
-        System.out.println("position :  " + position);
-        System.out.println("size :  " + drinkList.size());
+
         Drink hero = drinkList.get(position);
 
         byte[] base64converted = Base64.decode(hero.getImage(), Base64.DEFAULT);

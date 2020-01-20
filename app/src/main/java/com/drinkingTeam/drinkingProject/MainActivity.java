@@ -22,7 +22,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
+import com.drinkingTeam.drinkingProject.entities.IngredientEntity;
 import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
+import com.drinkingTeam.drinkingProject.tables.IngredientsDbHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -46,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private final static String TAG = "drinks";
     private TextView err;
-    private DrinksDbHelper drinkdb;
+    private DrinksDbHelper drinkDb;
+    private IngredientsDbHelper ingredientsDb;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -89,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.bottom_navigation);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        drinkdb = new DrinksDbHelper(this);
-
+        drinkDb = new DrinksDbHelper(this);
+        ingredientsDb = new IngredientsDbHelper(this);
 
         adapter2 = new MyListAdapter(this, R.layout.my_custom_list, favdrinks);
         err = findViewById(R.id.error_msg);
@@ -136,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
                                     JSONObject jsonIngredient = ingredientsArray.getJSONObject(j);
                                     Ingredient ingredient = new Ingredient();
                                     ingredient.setId(jsonIngredient.getLong("id"));
-                                    ingredient.setDrinkId(json.getLong("id"));
                                     ingredient.setName(jsonIngredient.getString("name"));
                                     ingredient.setQuantity(jsonIngredient.getString("quantity"));
                                     ingredient.setUnits(jsonIngredient.getString("units"));
@@ -162,8 +164,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mQueue.cancelAll(TAG);
-                error(R.string.no_connection);
-
+                if(drinks.size() == 0) {
+                    error(R.string.no_connection);
+                }
             }
         }) {
 
@@ -198,8 +201,13 @@ public class MainActivity extends AppCompatActivity {
     private void tempAddTofavs(Drink drink) {
         favdrinks.clear();
         DrinkEntity d = new DrinkEntity(drink);
-        drinkdb.addToFavourites(drinkdb.getWritableDatabase(),d);
-        favdrinks.add(new Drink(drinkdb.getAllFavourites(drinkdb.getWritableDatabase()).get(0)));
+        for (Ingredient i: drink.getIngredients()){
+            IngredientEntity entity = new IngredientEntity(i);
+            entity.setDrinkId(drink.getId());
+            ingredientsDb.addToIngredients(ingredientsDb.getWritableDatabase(), entity);
+        }
+        drinkDb.addToFavourites(drinkDb.getWritableDatabase(),d);
+        favdrinks.add(new Drink(drinkDb.getAllFavourites(drinkDb.getWritableDatabase()).get(0)));
     }
 
 
