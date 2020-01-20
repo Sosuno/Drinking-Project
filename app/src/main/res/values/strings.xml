@@ -3,4 +3,26 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="exemplary_txt">Tequila</string>
+    <string name="drinkImg_content_description">Drink Img</string>
+    <string name="imgButton_content_description">Click me and i will be filled</string>
+    <string name="see_more">Check me out</string>
+    <string name="discover">Discover</string>
+    <string name="favourites">My Recipes</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="recipeTitle">Recipe</string>
+    <string name="recipe">Exemplary recipe hsfshfnjdfjdjffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</string>
+    <string name="glassTitle">Glass Type</string>
+    <string name="glass">champagne glass</string>
+    <string name="DescriptionTitle">Description</string>
+    <string name="exemplary_description">cool description here</string>
+    <string name="enter_email">Enter email</string>
+    <string name="enter_username">Enter username</string>
+    <string name="enter_password">Enter password</string>
+    <string name="enter_password_2">Repeat password</string>
+    <string name="Register">Register</string>
+    <string name="RegisterImg">Henlo very much</string>
+
+    <string name="no_connection">Oops... We couldn\'t contact with server. But no worry. You still can browse your favourite drinks</string>
+    <string name="no_favourites">You don\'t have any favourites. Please add some. </string>
 </resources>

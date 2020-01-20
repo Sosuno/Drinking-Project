@@ -1,19 +1,28 @@
-package com.drinkingTeam.drinkingProject;
+package com.drinkingTeam.drinkingProject.entities;
 
-public class Ingredient {
+import com.drinkingTeam.drinkingProject.Ingredient;
+
+public class IngredientEntity {
 
     private Long id;
     private String name;
     private String quantity;
     private String units;
+    private Long drinkId;
 
-    public Ingredient(){}
-
-    public Ingredient(Long id, String name, String quantity, String units) {
+    public IngredientEntity(Long id, String name, String quantity, String units, Long drinkId) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.units = units;
+        this.drinkId = drinkId;
+    }
+
+    public IngredientEntity(Ingredient ingredient) {
+        this.id = ingredient.getId();
+        this.name = ingredient.getName();
+        this.quantity = ingredient.getQuantity();
+        this.units = ingredient.getUnits();
     }
 
     public Long getId() {
@@ -48,5 +57,11 @@ public class Ingredient {
         this.units = units;
     }
 
+    public Long getDrinkId() {
+        return drinkId;
+    }
 
+    public void setDrinkId(Long drinkId) {
+        this.drinkId = drinkId;
+    }
 }

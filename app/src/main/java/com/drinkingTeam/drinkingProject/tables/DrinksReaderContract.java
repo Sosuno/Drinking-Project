@@ -2,7 +2,6 @@ package com.drinkingTeam.drinkingProject.tables;
 
 import android.provider.BaseColumns;
 
-import java.sql.Blob;
 
 public final class DrinksReaderContract {
     private DrinksReaderContract() {}
@@ -13,6 +12,8 @@ public final class DrinksReaderContract {
         public static final String COLUMN_NAME_IMAGE = "image";
         public static final String COLUMN_NAME_RECIPE = "recipe";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
+        public static final String COLUMN_NAME_GLASS = "glass";
     }
+
 }
 

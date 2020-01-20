@@ -1,84 +1,33 @@
 package com.drinkingTeam.drinkingProject.entities;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
-
-import com.drinkingTeam.drinkingProject.tables.DrinksReaderContract;
-import com.drinkingTeam.drinkingProject.tables.DrinksReaderDbHelper;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.drinkingTeam.drinkingProject.Drink;
 
 public class DrinkEntity {
-    private long id;
+    private Long id;
     private String name;
-    private byte[] image;
+    private String image;
     private String recipe;
     private String description;
+    private String glass;
 
     public DrinkEntity() {}
 
-    public DrinkEntity(long id, String name, byte[] image, String recipe, String description) {
+    public DrinkEntity(Long id, String name,String image, String recipe, String description, String glass) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.recipe = recipe;
         this.description = description;
+        this.glass = glass;
     }
 
-    public long addToFavourites(DrinkEntity drinkEntity, Context context){
-        DrinksReaderDbHelper dbHelper = new DrinksReaderDbHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_NAME, drinkEntity.getName());
-        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_IMAGE, drinkEntity.getImage());
-        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_RECIPE, drinkEntity.getRecipe());
-        return db.insert(DrinksReaderContract.DrinksTable.TABLE_NAME,null,values);
-    }
-
-    public int removeFromFavourites(long id, Context context) {
-        DrinksReaderDbHelper dbHelper = new DrinksReaderDbHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String selection = DrinksReaderContract.DrinksTable._ID + " = ?";
-        String[] selectionArgs = { id+"" };
-        return db.delete(DrinksReaderContract.DrinksTable.TABLE_NAME,selection,selectionArgs);
-    }
-
-    public List<DrinkEntity> getAllFavourites(Context context){
-        DrinksReaderDbHelper dbHelper = new DrinksReaderDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        String[] projection = {
-                BaseColumns._ID,
-                DrinksReaderContract.DrinksTable.COLUMN_NAME_NAME,
-                DrinksReaderContract.DrinksTable.COLUMN_NAME_IMAGE,
-                DrinksReaderContract.DrinksTable.COLUMN_NAME_RECIPE
-        };
-
-        Cursor cursor = db.query(
-                DrinksReaderContract.DrinksTable.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-        List<DrinkEntity> drinks = new ArrayList<>();
-        while(cursor.moveToNext()) {
-            long drinkId = cursor.getLong(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable._ID));
-            String drinkName = cursor.getString(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable.COLUMN_NAME_NAME));
-            byte[] image = cursor.getBlob(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable.COLUMN_NAME_IMAGE));
-            String recipe = cursor.getString(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable.COLUMN_NAME_RECIPE));
-            String desc = cursor.getString(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable.COLUMN_NAME_DESCRIPTION));
-
-            drinks.add(new DrinkEntity(drinkId, drinkName,image,recipe, desc));
-        }
-        cursor.close();
-        return drinks;
+    public DrinkEntity(Drink d){
+        this.id = d.getId();
+        this.name = d.getName();
+        this.image = d.getImage();
+        this.recipe = d.getRecipe();
+        this.description = d.getDescription();
+        this.glass = d.getGlass();
     }
 
     public String getName() {
@@ -97,19 +46,19 @@ public class DrinkEntity {
         this.recipe = recipe;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -119,5 +68,13 @@ public class DrinkEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getGlass() {
+        return glass;
+    }
+
+    public void setGlass(String glass) {
+        this.glass = glass;
     }
 }

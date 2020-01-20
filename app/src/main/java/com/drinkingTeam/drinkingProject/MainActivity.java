@@ -1,26 +1,29 @@
 package com.drinkingTeam.drinkingProject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.volley.AuthFailureError;
-
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
+import com.drinkingTeam.drinkingProject.entities.IngredientEntity;
+import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
+import com.drinkingTeam.drinkingProject.tables.IngredientsDbHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -34,11 +37,19 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-    private TextView mTextMessage;
-    private ConstraintLayout home_layout;
+
+
     private List<Drink> drinks = new ArrayList<>();
+    private List<Drink> favdrinks = new ArrayList<>();
     private final static String HOST = "192.168.0.38:8080";
-    ListView listView;
+    private MyListAdapter adapter;
+    private MyListAdapter adapter2;
+    private ListView listView;
+    private final static String TAG = "drinks";
+    private TextView err;
+    private DrinksDbHelper drinkDb;
+    private IngredientsDbHelper ingredientsDb;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -47,15 +58,27 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    //home_layout = findViewById(R.id.home_layout);
-                    home_layout.setVisibility(View.VISIBLE);
+                    drinks = getDrinks();
+                    System.out.println(drinks.size());
+                    if(drinks.size() == 0){
+                        error(R.string.no_connection);
+                    }else {
+                        noError();
+                        adapter.setDrinkList(drinks);
+                        listView.setAdapter(adapter);
+                    }
+
                     return true;
+
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                    if(favdrinks.size() == 0) {
+                        error(R.string.no_favourites);
+                    }
+                    else {
+                        noError();
+                        adapter2.setDrinkList(favdrinks);
+                        listView.setAdapter(adapter2);
+                    }
                     return true;
             }
             return false;
@@ -65,19 +88,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-        //BottomNavigationView navView = findViewById(R.id.bottom);
-        mTextMessage = findViewById(R.id.message);
-        //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        BottomNavigationView navView = findViewById(R.id.bottom_navigation);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        drinkDb = new DrinksDbHelper(this);
+        ingredientsDb = new IngredientsDbHelper(this);
+
+        adapter2 = new MyListAdapter(this, R.layout.my_custom_list, favdrinks,favdrinks);
+        err = findViewById(R.id.error_msg);
         listView = (ListView) findViewById(R.id.bubu);
+        err = (TextView) this.findViewById(R.id.error_msg);
+        noError();
+        adapter = new MyListAdapter(this, R.layout.my_custom_list, drinks,favdrinks);
+        drinks = getDrinks();
 
 
-        drinks = getDrinks(this);
     }
 
-    public List<Drink> getDrinks(Context context) {
-        drinksFromJson(context);
+    public List<Drink> getDrinks() {
+        drinksFromJson(this);
         return drinks;
     }
 
@@ -89,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            drinks.clear();
                             System.out.println(response.getJSONArray("drinks"));
                             JSONArray  jsonArray = response.getJSONArray("drinks");
                             for (int i = 0; i < jsonArray.length(); i++) {
@@ -108,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
                                     JSONObject jsonIngredient = ingredientsArray.getJSONObject(j);
                                     Ingredient ingredient = new Ingredient();
                                     ingredient.setId(jsonIngredient.getLong("id"));
-                                    ingredient.setDrinkId(json.getLong("id"));
                                     ingredient.setName(jsonIngredient.getString("name"));
                                     ingredient.setQuantity(jsonIngredient.getString("quantity"));
                                     ingredient.setUnits(jsonIngredient.getString("units"));
@@ -117,8 +146,13 @@ public class MainActivity extends AppCompatActivity {
                                 drink.setIngredients(ingredients);
                                 addToDrinks(drink);
                             }
-                            MyListAdapter adapter = new MyListAdapter(context, R.layout.my_custom_list, drinks);
+                            adapter.setDrinkList(drinks);
                             listView.setAdapter(adapter);
+                            tempAddTofavs(drinks.get(0));
+                            if(drinks.size() == 0) {
+                                error(R.string.no_connection);
+                            }
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -128,7 +162,10 @@ public class MainActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                mQueue.cancelAll(TAG);
+                if(drinks.size() == 0) {
+                    error(R.string.no_connection);
+                }
             }
         }) {
 
@@ -139,10 +176,47 @@ public class MainActivity extends AppCompatActivity {
                 return headers;
             }
         };
+        request.setTag(TAG);
+        request.setShouldRetryServerErrors(false);
+        request.setRetryPolicy(new DefaultRetryPolicy(10, 1, 2));
         mQueue.add(request);
     }
 
     private void addToDrinks(Drink d){
         drinks.add(d);
     }
+
+    private void error(int e) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(e);
+        builder.setPositiveButton("OK :(", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        //creating and displaying the alert dialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void noError() {
+        listView.setVisibility(View.VISIBLE);
+        err.setVisibility(View.INVISIBLE);
+    }
+
+    private void tempAddTofavs(Drink drink) {
+        favdrinks.clear();
+        DrinkEntity d = new DrinkEntity(drink);
+        for (Ingredient i: drink.getIngredients()){
+            IngredientEntity entity = new IngredientEntity(i);
+            entity.setDrinkId(drink.getId());
+            ingredientsDb.addToIngredients(ingredientsDb.getWritableDatabase(), entity);
+        }
+        drinkDb.addToFavourites(drinkDb.getWritableDatabase(),d);
+        favdrinks.add(new Drink(drinkDb.getAllFavourites(drinkDb.getWritableDatabase()).get(0)));
+    }
+
+
 }
