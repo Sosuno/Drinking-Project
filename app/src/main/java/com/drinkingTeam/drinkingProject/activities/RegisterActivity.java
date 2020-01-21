@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,10 +40,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private UserDbHelper userDbHelper;
     private DrinksDbHelper drinksDb;
-    private boolean loginTouched = false;
-    private boolean passwordTouched = false;
-    private boolean repeatPasswordTouched = false;
-    private boolean emailTouched = false;
     private EditText enterUsernameEditText;
     private EditText enterEmailEditText;
     private EditText enterPasswordEditText;
@@ -59,7 +54,10 @@ public class RegisterActivity extends AppCompatActivity {
         cxt = this;
         userDbHelper = new UserDbHelper(this);
         setContentView(R.layout.register);
-        setUpTextListeners();
+        enterPasswordEditText = findViewById(R.id.passwordEditText);
+        reEnterPasswordEditText = findViewById(R.id.password2EditText);
+        enterEmailEditText = findViewById(R.id.emailEditText);
+        enterUsernameEditText = findViewById(R.id.usernameEditText);
         Button register = findViewById(R.id.buttonRegister);
 
         register.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public byte[] getBody() {
                 String your_string_json = "{ \"username\": \"" + username + "\", " +
-                        "\"password\": \"" + password + "\"" +
+                        "\"password\": \"" + password + "\"," +
                         "\"email\": \"" + email + "\"}";
                 return your_string_json.getBytes();
             }
@@ -144,63 +142,5 @@ public class RegisterActivity extends AppCompatActivity {
         request.setShouldRetryServerErrors(false);
         request.setRetryPolicy(new DefaultRetryPolicy(100, 1, 2));
         mQueue.add(request);
-    }
-
-    private void setUpTextListeners() {
-        enterUsernameEditText = findViewById(R.id.usernameEditText);
-        final TextView enterUsernameTextView = findViewById(R.id.usernameTextView);
-        enterUsernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View v, boolean hasFocus) {
-
-                if (hasFocus) {
-                    enterUsernameTextView.setHint("");
-                    loginTouched = true;
-                }
-                else if(!loginTouched || enterUsernameEditText.getText().toString().equals("")) enterUsernameTextView.setHint(R.string.enter_username);
-
-            }
-        });
-
-        enterEmailEditText = findViewById(R.id.emailEditText);
-        final TextView enterEmailTextView = findViewById(R.id.emailTextView);
-        enterEmailEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View v, boolean hasFocus) {
-
-                if (hasFocus) {
-                    enterEmailTextView.setHint("");
-                    emailTouched = true;
-                }
-                else if(!emailTouched || enterEmailEditText.getText().toString().equals("")) enterEmailTextView.setHint(R.string.enter_password);
-
-            }
-        });
-
-        enterPasswordEditText = findViewById(R.id.passwordEditText);
-        final TextView enterPasswordTextView = findViewById(R.id.passwordTextView);
-        enterPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View v, boolean hasFocus) {
-
-                if (hasFocus) {
-                    enterPasswordTextView.setHint("");
-                    passwordTouched = true;
-                }
-                else if(!passwordTouched || enterPasswordEditText.getText().toString().equals("")) enterPasswordTextView.setHint(R.string.enter_password);
-
-            }
-        });
-
-        reEnterPasswordEditText = findViewById(R.id.password2EditText);
-        final TextView reEnterPasswordTextView = findViewById(R.id.password2TextView);
-        reEnterPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View v, boolean hasFocus) {
-
-                if (hasFocus) {
-                    reEnterPasswordTextView.setHint("");
-                    repeatPasswordTouched = true;
-                }
-                else if(!repeatPasswordTouched || reEnterPasswordEditText.getText().toString().equals("")) reEnterPasswordTextView.setHint(R.string.enter_password_2);
-
-            }
-        });
     }
 }
