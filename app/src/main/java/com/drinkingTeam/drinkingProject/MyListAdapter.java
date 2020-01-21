@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -11,12 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.drinkingTeam.drinkingProject.activities.DrinksDisplayActivity;
+import com.drinkingTeam.drinkingProject.activities.MainActivity;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -30,6 +36,7 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
     //the list values in the List of type hero
     private List<Drink> drinkList;
     private List<Drink> favsList;
+    private Button seeMore;
 
     //activity context
     private Context context;
@@ -53,25 +60,34 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-
-
         View view = layoutInflater.inflate(resource, null, false);
 
         if(drinkList.size() < 1) return new View(context);
-
-
 
         ImageView imageView = view.findViewById(R.id.imageView);
         TextView textViewName = view.findViewById(R.id.textViewName);
         TextView textViewTeam = view.findViewById(R.id.textViewTeam);
 
 
-        Drink drink = drinkList.get(position);
+        final Drink drink = drinkList.get(position);
+        final boolean isFavourite = checkIfIsFavourite(drink,favsList);
 
-        if(checkIfIsFavourite(drink,favsList)) {
+        if(isFavourite) {
             ImageButton imageButton = view.findViewById(R.id.favourites_Button);
             imageButton.setActivated(true);
         }
+        seeMore = view.findViewById(R.id.buttonSeeMore);
+        seeMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent displayDrink = new Intent(context, DrinksDisplayActivity.class);
+                Gson gson = new Gson();
+                String drinkToTransfer = gson.toJson(drink);
+                displayDrink.putExtra("Drink",drinkToTransfer);
+                displayDrink.putExtra("favourite", isFavourite);
+                context.startActivity(displayDrink);
+            }
+        });
 
         byte[] base64converted = Base64.decode(drink.getImage(), Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(base64converted, 0, base64converted.length);

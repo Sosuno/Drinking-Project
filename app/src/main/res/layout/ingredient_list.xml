@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/debil"
+    >
+
+    <TextView
+        android:id="@+id/Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="7dp"
+        android:paddingBottom="10dp"
+        android:text="@string/exemplary_txt"
+        android:textAlignment="center"
+        android:textSize="35sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Name"
+        android:layout_marginTop="23dp"
+        android:paddingBottom="10dp"
+        android:layout_marginStart="118dp"
+        android:text="@string/exemplary_txt"
+        android:textAlignment="center"
+        android:textSize="35sp" />
+
+    <TextView
+        android:id="@+id/units"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Name"
+
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="32dp"
+        android:layout_toEndOf="@id/quantity"
+        android:paddingTop="10dp"
+        android:text="@string/exemplary_txt"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textStyle="italic" />
+
+
+    <!-- <Button
+         android:id="@+id/buttonDelete"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/imageView"
+         android:layout_toEndOf="@+id/imageView"
+         android:layout_toRightOf="@+id/imageView"
+         android:background="@color/colorPrimary"
+          />-->
+
+
+</RelativeLayout>
