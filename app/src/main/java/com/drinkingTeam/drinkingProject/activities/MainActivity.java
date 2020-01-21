@@ -1,4 +1,4 @@
-package com.drinkingTeam.drinkingProject;
+package com.drinkingTeam.drinkingProject.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -20,6 +20,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.drinkingTeam.drinkingProject.Drink;
+import com.drinkingTeam.drinkingProject.Ingredient;
+import com.drinkingTeam.drinkingProject.MyListAdapter;
+import com.drinkingTeam.drinkingProject.R;
 import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
 import com.drinkingTeam.drinkingProject.entities.IngredientEntity;
 import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private DrinksDbHelper drinkDb;
     private IngredientsDbHelper ingredientsDb;
+    private Context cxt;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -74,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     drinks = getDrinks();
                     System.out.println(drinks.size());
                     if(drinks.size() == 0){
-                        error(getApplicationContext(),R.string.no_connection);
+                        error(cxt,R.string.no_connection);
                     }else {
                     adapter.setDrinkList(drinks);
                     listView.setAdapter(adapter);
@@ -83,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
                     return true;
 
                 case R.id.navigation_dashboard:
+                    favdrinks = drinkDb.getAllFavourites(drinkDb.getReadableDatabase());
                     if(favdrinks.size() == 0) {
-                        error(getApplicationContext(), R.string.no_favourites);
+                        error(cxt, R.string.no_favourites);
                     }
-
                     adapter2.setDrinkList(favdrinks);
                     listView.setAdapter(adapter2);
 
@@ -102,9 +107,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.bottom_navigation);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        cxt = this;
         drinkDb = new DrinksDbHelper(this);
         ingredientsDb = new IngredientsDbHelper(this);
-
         adapter2 = new MyListAdapter(this, R.layout.my_custom_list, favdrinks,favdrinks);
         listView = (ListView) findViewById(R.id.bubu);
         adapter = new MyListAdapter(this, R.layout.my_custom_list, drinks,favdrinks);
@@ -132,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                                 JSONObject json = jsonArray.getJSONObject(i);
                                 Drink drink = new Drink();
                                 drink.setDescription(json.getString(COLUMN_NAME_DESCRIPTION));
-                                drink.setId(json.getLong(_ID));
+                                drink.setId(json.getLong("id"));
                                 drink.setName(json.getString(COLUMN_NAME_NAME));
                                 drink.setGlass(json.getString(COLUMN_NAME_GLASS));
                                 drink.setImage(json.getString(COLUMN_NAME_IMAGE));
@@ -143,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                                 for (int j = 0; j < ingredientsArray.length(); j++) {
                                     JSONObject jsonIngredient = ingredientsArray.getJSONObject(j);
                                     Ingredient ingredient = new Ingredient();
-                                    ingredient.setId(jsonIngredient.getLong(_ID));
+                                    ingredient.setId(jsonIngredient.getLong("id"));
                                     ingredient.setName(jsonIngredient.getString(IngredientsReaderContract.IngredientsTable.COLUMN_NAME_NAME));
                                     ingredient.setQuantity(jsonIngredient.getString(COLUMN_NAME_QUANTITY));
                                     ingredient.setUnits(jsonIngredient.getString(COLUMN_NAME_UNITS));
@@ -154,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                             adapter.setDrinkList(drinks);
                             listView.setAdapter(adapter);
-                            tempAddTofavs(drinks.get(0));
                             if(drinks.size() == 0) {
                                 error(context, R.string.no_connection);
                             }
@@ -183,26 +187,11 @@ public class MainActivity extends AppCompatActivity {
         };
         request.setTag(GET_DRINKS_REQUEST_TAG);
         request.setShouldRetryServerErrors(false);
-        request.setRetryPolicy(new DefaultRetryPolicy(10, 1, 2));
+        request.setRetryPolicy(new DefaultRetryPolicy(100, 1, 2));
         mQueue.add(request);
     }
 
     private void addToDrinks(Drink d){
         drinks.add(d);
     }
-
-    private void tempAddTofavs(Drink drink) {
-        favdrinks.clear();
-        DrinkEntity d = new DrinkEntity(drink);
-        for (Ingredient i: drink.getIngredients()){
-            IngredientEntity entity = new IngredientEntity(i);
-            entity.setDrinkId(drink.getId());
-            ingredientsDb.addToIngredients(ingredientsDb.getWritableDatabase(), entity);
-        }
-        drinkDb.addToFavourites(drinkDb.getWritableDatabase(),d);
-        favdrinks.add(new Drink(drinkDb.getAllFavourites(drinkDb.getWritableDatabase()).get(0)));
-    }
-
-
-
 }

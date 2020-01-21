@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import com.drinkingTeam.drinkingProject.Drink;
 import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
 
 import java.util.ArrayList;
@@ -16,9 +17,11 @@ public class DrinksDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "DrinksReader.db";
+    private IngredientsDbHelper ingredientsDb;
 
     public DrinksDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        ingredientsDb = new IngredientsDbHelper(context);
     }
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
@@ -30,8 +33,15 @@ public class DrinksDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
     }
+
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+    public void newUser(SQLiteDatabase db){
+        ingredientsDb.newUser(db);
+        db.execSQL(SQL_DELETE_ENTRIES);
+        onCreate(db);
     }
 
 
@@ -59,12 +69,13 @@ public class DrinksDbHelper extends SQLiteOpenHelper {
     }
 
     public int removeFromFavourites(SQLiteDatabase db ,long id) {
+        ingredientsDb.removeDrinkIngredients(db,id);
         String selection = DrinksReaderContract.DrinksTable._ID + " = ?";
         String[] selectionArgs = { id+"" };
         return db.delete(DrinksReaderContract.DrinksTable.TABLE_NAME,selection,selectionArgs);
     }
 
-    public List<DrinkEntity> getAllFavourites(SQLiteDatabase db){
+    public List<Drink> getAllFavourites(SQLiteDatabase db){
         String[] projection = {
                 BaseColumns._ID,
                 DrinksReaderContract.DrinksTable.COLUMN_NAME_NAME,
@@ -83,7 +94,7 @@ public class DrinksDbHelper extends SQLiteOpenHelper {
                 null,
                 null
         );
-        List<DrinkEntity> drinks = new ArrayList<>();
+        List<Drink> drinks = new ArrayList<>();
         while(cursor.moveToNext()) {
             Long drinkId = cursor.getLong(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable._ID));
             String drinkName = cursor.getString(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable.COLUMN_NAME_NAME));
@@ -92,7 +103,7 @@ public class DrinksDbHelper extends SQLiteOpenHelper {
             String desc = cursor.getString(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable.COLUMN_NAME_DESCRIPTION));
             String glass = cursor.getString(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable.COLUMN_NAME_GLASS));
 
-            drinks.add(new DrinkEntity(drinkId, drinkName,image,recipe, desc, glass));
+            drinks.add(new Drink(drinkId, drinkName,image,recipe, desc, glass, ingredientsDb.getIngredientsForDrink(db,drinkId)));
         }
         cursor.close();
         return drinks;

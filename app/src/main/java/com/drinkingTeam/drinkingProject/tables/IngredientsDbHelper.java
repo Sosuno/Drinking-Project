@@ -31,6 +31,11 @@ public class IngredientsDbHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
+    public void newUser(SQLiteDatabase db){
+        db.execSQL(SQL_DELETE_ENTRIES);
+        onCreate(db);
+    }
+
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + IngredientsReaderContract.IngredientsTable.TABLE_NAME + " (" +

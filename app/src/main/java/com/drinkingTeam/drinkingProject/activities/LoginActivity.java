@@ -1,5 +1,6 @@
-package com.drinkingTeam.drinkingProject;
+package com.drinkingTeam.drinkingProject.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,45 +20,66 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.drinkingTeam.drinkingProject.Drink;
+import com.drinkingTeam.drinkingProject.Ingredient;
+import com.drinkingTeam.drinkingProject.R;
+import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
 import com.drinkingTeam.drinkingProject.entities.UserEntity;
+import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
+import com.drinkingTeam.drinkingProject.tables.IngredientsReaderContract;
 import com.drinkingTeam.drinkingProject.tables.UserDbHelper;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.provider.BaseColumns._ID;
 import static com.drinkingTeam.Singleton.HOST;
 import static com.drinkingTeam.Singleton.LOGIN;
 import static com.drinkingTeam.Singleton.LOGIN_REQUEST_TAG;
 import static com.drinkingTeam.Singleton.VERY_SECRET_PASSWORD;
 import static com.drinkingTeam.Singleton.error;
+import static com.drinkingTeam.drinkingProject.tables.DrinksReaderContract.DrinksTable.COLUMN_NAME_DESCRIPTION;
+import static com.drinkingTeam.drinkingProject.tables.DrinksReaderContract.DrinksTable.COLUMN_NAME_GLASS;
+import static com.drinkingTeam.drinkingProject.tables.DrinksReaderContract.DrinksTable.COLUMN_NAME_IMAGE;
+import static com.drinkingTeam.drinkingProject.tables.DrinksReaderContract.DrinksTable.COLUMN_NAME_NAME;
+import static com.drinkingTeam.drinkingProject.tables.DrinksReaderContract.DrinksTable.COLUMN_NAME_RECIPE;
+import static com.drinkingTeam.drinkingProject.tables.DrinksReaderContract.DrinksTable.TABLE_NAME;
+import static com.drinkingTeam.drinkingProject.tables.IngredientsReaderContract.IngredientsTable.COLUMN_NAME_QUANTITY;
+import static com.drinkingTeam.drinkingProject.tables.IngredientsReaderContract.IngredientsTable.COLUMN_NAME_UNITS;
 import static com.drinkingTeam.drinkingProject.tables.UserReaderContract.UserTable.COLUMN_NAME_EMAIL;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     private UserDbHelper userDbHelper;
+    private DrinksDbHelper drinksDbHelper;
     private boolean loginTouched = false;
     private boolean passwordTouched = false;
     private EditText enterUsernameEditText;
     private EditText enterPasswordEditView;
+    private Context cxt;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        userDbHelper = new UserDbHelper(this);
+        cxt = this;
+        userDbHelper = new UserDbHelper(cxt);
+        drinksDbHelper = new DrinksDbHelper(cxt);
         final List<UserEntity> user = userDbHelper.getUser(userDbHelper.getReadableDatabase());
 
         if(user.size() > 0) {
-            Intent drinksDisplay = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(drinksDisplay);
+          //  Intent drinksDisplay = new Intent(LoginActivity.this, MainActivity.class);
+          //  startActivity(drinksDisplay);
         }
-
+        drinksDbHelper.newUser(drinksDbHelper.getWritableDatabase());
         setContentView(R.layout.login);
         setUpTextListeners();
 
@@ -75,14 +97,15 @@ public class LoginActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.register);
+                Intent registration = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(registration);
             }
         });
     }
 
     private void contactServer(final String login, final String password){
         if(login.equals("") || password.equals("")) {
-            error(getApplicationContext(),R.string.login_err_clean);
+            error(cxt,R.string.login_err_clean);
             return;
         }
 
@@ -94,6 +117,31 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            JSONArray jsonArray = response.getJSONArray(TABLE_NAME);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject json = jsonArray.getJSONObject(i);
+                                Drink drink = new Drink();
+                                drink.setDescription(json.getString(COLUMN_NAME_DESCRIPTION));
+                                drink.setId(json.getLong("id"));
+                                drink.setName(json.getString(COLUMN_NAME_NAME));
+                                drink.setGlass(json.getString(COLUMN_NAME_GLASS));
+                                drink.setImage(json.getString(COLUMN_NAME_IMAGE));
+                                drink.setRecipe(json.getString(COLUMN_NAME_RECIPE));
+                                JSONArray ingredientsArray = json.getJSONArray(IngredientsReaderContract.IngredientsTable.TABLE_NAME);
+                                List<Ingredient> ingredients = new ArrayList<>();
+                                System.out.println(ingredientsArray.length());
+                                for (int j = 0; j < ingredientsArray.length(); j++) {
+                                    JSONObject jsonIngredient = ingredientsArray.getJSONObject(j);
+                                    Ingredient ingredient = new Ingredient();
+                                    ingredient.setId(jsonIngredient.getLong("id"));
+                                    ingredient.setName(jsonIngredient.getString(IngredientsReaderContract.IngredientsTable.COLUMN_NAME_NAME));
+                                    ingredient.setQuantity(jsonIngredient.getString(COLUMN_NAME_QUANTITY));
+                                    ingredient.setUnits(jsonIngredient.getString(COLUMN_NAME_UNITS));
+                                    ingredients.add(ingredient);
+                                }
+                                drink.setIngredients(ingredients);
+                                drinksDbHelper.addToFavourites(drinksDbHelper.getWritableDatabase(),new DrinkEntity(drink));
+                            }
                             String email = response.getString(COLUMN_NAME_EMAIL);
                             userDbHelper.addUser(userDbHelper.getWritableDatabase(),new UserEntity(null,login,password,email));
                             mQueue.cancelAll(LOGIN_REQUEST_TAG);
@@ -113,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                 NetworkResponse networkResponse = error.networkResponse;
                 if (networkResponse != null && networkResponse.data != null) {
                     String jsonError = new String(networkResponse.data);
-                    error(getApplicationContext(),jsonError);
+                    error(cxt,jsonError);
                 }
                 mQueue.cancelAll(LOGIN_REQUEST_TAG);
             }

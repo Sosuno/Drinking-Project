@@ -1,7 +1,6 @@
-package com.drinkingTeam.drinkingProject;
+package com.drinkingTeam.drinkingProject.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,7 +20,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.drinkingTeam.drinkingProject.R;
 import com.drinkingTeam.drinkingProject.entities.UserEntity;
+import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
 import com.drinkingTeam.drinkingProject.tables.UserDbHelper;
 
 import org.json.JSONObject;
@@ -39,6 +40,7 @@ import static com.drinkingTeam.Singleton.error;
 public class RegisterActivity extends AppCompatActivity {
 
     private UserDbHelper userDbHelper;
+    private DrinksDbHelper drinksDb;
     private boolean loginTouched = false;
     private boolean passwordTouched = false;
     private boolean repeatPasswordTouched = false;
@@ -47,12 +49,14 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText enterEmailEditText;
     private EditText enterPasswordEditText;
     private EditText reEnterPasswordEditText;
+    private Context cxt;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        cxt = this;
         userDbHelper = new UserDbHelper(this);
         setContentView(R.layout.register);
         setUpTextListeners();
@@ -66,11 +70,11 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = enterEmailEditText.getText().toString();
                 String repeatedPassword = reEnterPasswordEditText.getText().toString();
                 if(username.equals("") || password.equals("") || email.equals("") || repeatedPassword.equals("")) {
-                    error(getApplicationContext(), R.string.empty_fields);
+                    error(cxt, R.string.empty_fields);
                     return;
                 }
                 if(!password.equals(repeatedPassword)) {
-                    error(getApplicationContext(),R.string.password_no_match);
+                    error(cxt,R.string.password_no_match);
                     enterPasswordEditText.setText("");
                     reEnterPasswordEditText.setText("");
                     return;
@@ -78,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String regex = "^(.+)@(.+)$";
                 Pattern pattern = Pattern.compile(regex);
                 if(!pattern.matcher(email).matches()){
-                    error(getApplicationContext(),R.string.email_not_valid);
+                    error(cxt,R.string.email_not_valid);
                     return;
                 }
                 register(username,password,email);
@@ -96,6 +100,8 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         userDbHelper.addUser(userDbHelper.getWritableDatabase(),new UserEntity(null,username,password,email));
+                        drinksDb = new DrinksDbHelper(cxt);
+                        drinksDb.newUser(drinksDb.getWritableDatabase());
                         mQueue.cancelAll(REGISTER_REQUEST_TAG);
                         Intent drinksDisplay = new Intent(RegisterActivity.this, MainActivity.class);
                         startActivity(drinksDisplay);
@@ -108,7 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
                 NetworkResponse networkResponse = error.networkResponse;
                 if (networkResponse != null && networkResponse.data != null) {
                     String jsonError = new String(networkResponse.data);
-                    error(getApplicationContext(),jsonError);
+                    error(cxt,jsonError);
                 }
                 mQueue.cancelAll(REGISTER_REQUEST_TAG);
             }
