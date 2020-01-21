@@ -25,15 +25,6 @@ public class Drink {
         this.glass = glass;
         this.ingredients = ingredients;
     }
-    public Drink(DrinkEntity d) {
-        this.id = d.getId();
-        this.name = d.getName();
-        this.description = d.getDescription();
-        this.recipe = d.getRecipe();
-        this.image = d.getImage();
-        this.glass = d.getGlass();
-
-    }
 
     public Long getId() {
         return id;
