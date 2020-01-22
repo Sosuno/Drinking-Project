@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-import com.drinkingTeam.drinkingProject.Drink;
+import com.drinkingTeam.drinkingProject.types.Drink;
 import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
 
 import java.util.ArrayList;
@@ -60,6 +60,7 @@ public class DrinksDbHelper extends SQLiteOpenHelper {
     public Long addToFavourites(SQLiteDatabase db, DrinkEntity drinkEntity){
 
         ContentValues values = new ContentValues();
+        values.put(DrinksReaderContract.DrinksTable._ID,drinkEntity.getId());
         values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_NAME, drinkEntity.getName());
         values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_IMAGE, drinkEntity.getImage());
         values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_RECIPE, drinkEntity.getRecipe());
@@ -103,7 +104,7 @@ public class DrinksDbHelper extends SQLiteOpenHelper {
             String desc = cursor.getString(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable.COLUMN_NAME_DESCRIPTION));
             String glass = cursor.getString(cursor.getColumnIndexOrThrow(DrinksReaderContract.DrinksTable.COLUMN_NAME_GLASS));
 
-            drinks.add(new Drink(drinkId, drinkName,image,recipe, desc, glass, ingredientsDb.getIngredientsForDrink(db,drinkId)));
+            drinks.add(new Drink(drinkId, drinkName,desc,recipe, image, glass, ingredientsDb.getIngredientsForDrink(db,drinkId)));
         }
         cursor.close();
         return drinks;

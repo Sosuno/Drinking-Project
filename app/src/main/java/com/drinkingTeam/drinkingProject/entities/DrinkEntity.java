@@ -1,6 +1,6 @@
 package com.drinkingTeam.drinkingProject.entities;
 
-import com.drinkingTeam.drinkingProject.Drink;
+import com.drinkingTeam.drinkingProject.types.Drink;
 
 public class DrinkEntity {
     private Long id;

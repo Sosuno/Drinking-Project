@@ -1,13 +1,12 @@
 package com.drinkingTeam.drinkingProject.activities;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,15 +19,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.drinkingTeam.drinkingProject.Drink;
-import com.drinkingTeam.drinkingProject.Ingredient;
-import com.drinkingTeam.drinkingProject.MyListAdapter;
+import com.drinkingTeam.drinkingProject.types.Drink;
+import com.drinkingTeam.drinkingProject.types.Ingredient;
+import com.drinkingTeam.drinkingProject.activities.listAdapters.MyListAdapter;
 import com.drinkingTeam.drinkingProject.R;
-import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
-import com.drinkingTeam.drinkingProject.entities.IngredientEntity;
 import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
 import com.drinkingTeam.drinkingProject.tables.IngredientsDbHelper;
 import com.drinkingTeam.drinkingProject.tables.IngredientsReaderContract;
+import com.drinkingTeam.drinkingProject.tables.UserDbHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -40,10 +38,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.provider.BaseColumns._ID;
 import static com.drinkingTeam.Singleton.GET_DRINKS;
 import static com.drinkingTeam.Singleton.GET_DRINKS_REQUEST_TAG;
 import static com.drinkingTeam.Singleton.HOST;
+import static com.drinkingTeam.Singleton.UPDATE_FAVOURITES;
+import static com.drinkingTeam.Singleton.UPDATE_FAVOURITES_REQUEST_TAG;
 import static com.drinkingTeam.Singleton.VERY_SECRET_PASSWORD;
 import static com.drinkingTeam.Singleton.error;
 import static com.drinkingTeam.drinkingProject.tables.DrinksReaderContract.DrinksTable.COLUMN_NAME_DESCRIPTION;
@@ -65,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
     private MyListAdapter adapter2;
     private ListView listView;
     private DrinksDbHelper drinkDb;
-    private IngredientsDbHelper ingredientsDb;
+    private static UserDbHelper userDb;
     private Context cxt;
-
+    private static RequestQueue mQueue;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -77,14 +76,12 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     drinks = getDrinks();
-                    System.out.println(drinks.size());
                     if(drinks.size() == 0){
                         error(cxt,R.string.no_connection);
                     }else {
                     adapter.setDrinkList(drinks);
                     listView.setAdapter(adapter);
                     }
-
                     return true;
 
                 case R.id.navigation_dashboard:
@@ -94,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     adapter2.setDrinkList(favdrinks);
                     listView.setAdapter(adapter2);
-
                     return true;
             }
             return false;
@@ -108,14 +104,31 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.bottom_navigation);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         cxt = this;
+        mQueue = Volley.newRequestQueue(cxt);
         drinkDb = new DrinksDbHelper(this);
-        ingredientsDb = new IngredientsDbHelper(this);
+        favdrinks = drinkDb.getAllFavourites(drinkDb.getReadableDatabase());
+        userDb = new UserDbHelper(this);
         adapter2 = new MyListAdapter(this, R.layout.my_custom_list, favdrinks,favdrinks);
         listView = (ListView) findViewById(R.id.bubu);
         adapter = new MyListAdapter(this, R.layout.my_custom_list, drinks,favdrinks);
         drinks = getDrinks();
+    }
 
+    // create an action bar button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_bar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            logout();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public List<Drink> getDrinks() {
@@ -124,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void drinksFromJson(final Context context) {
-        final RequestQueue mQueue = Volley.newRequestQueue(context);
         String url = HOST + GET_DRINKS;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -193,5 +205,49 @@ public class MainActivity extends AppCompatActivity {
 
     private void addToDrinks(Drink d){
         drinks.add(d);
+    }
+
+    private void logout() {
+        userDb.removeUser(userDb.getWritableDatabase());
+        Intent loginDisplay = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(loginDisplay);
+    }
+
+    public static void favourites_update(final List<Drink> favdrinks) {
+        String url = HOST + UPDATE_FAVOURITES;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        mQueue.cancelAll(UPDATE_FAVOURITES_REQUEST_TAG);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                mQueue.cancelAll(UPDATE_FAVOURITES_REQUEST_TAG);
+            }
+        }) {
+            @Override
+            public byte[] getBody() {
+                List<Long> favIds = new ArrayList<>();
+                for (Drink d: favdrinks) favIds.add(d.getId());
+                String your_string_json = "{ \"favourites\": " + favIds + "," +
+                        "\"username\": \"" + userDb.getUser(userDb.getReadableDatabase()).get(0).getUsername() + "\"}";
+                System.out.println(your_string_json);
+                return your_string_json.getBytes();
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("authorization", VERY_SECRET_PASSWORD);
+                return headers;
+            }
+        };
+        request.setTag(UPDATE_FAVOURITES_REQUEST_TAG);
+        request.setShouldRetryServerErrors(false);
+        request.setRetryPolicy(new DefaultRetryPolicy(1000, 1, 2));
+        mQueue.add(request);
     }
 }

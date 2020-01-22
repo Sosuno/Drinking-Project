@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.drinkingTeam.drinkingProject.Ingredient;
+import com.drinkingTeam.drinkingProject.types.Ingredient;
 import com.drinkingTeam.drinkingProject.entities.IngredientEntity;
 
 import java.util.ArrayList;

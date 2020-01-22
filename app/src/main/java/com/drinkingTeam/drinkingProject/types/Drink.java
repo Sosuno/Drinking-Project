@@ -1,6 +1,4 @@
-package com.drinkingTeam.drinkingProject;
-
-import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
+package com.drinkingTeam.drinkingProject.types;
 
 import java.util.List;
 

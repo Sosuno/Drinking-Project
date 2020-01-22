@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.drinkingTeam.drinkingProject.R;
 
 public final class Singleton {
@@ -14,9 +16,11 @@ public final class Singleton {
     public static final String GET_DRINKS = "/get/drinks";
     public static final String LOGIN = "/user/token";
     public static final String REGISTER = "/user/register";
+    public static final String UPDATE_FAVOURITES = "/user/updateFavs";
     public static final String LOGIN_REQUEST_TAG = "no more entry";
     public static final String GET_DRINKS_REQUEST_TAG = "too drunk";
     public static final String REGISTER_REQUEST_TAG = "wanna get drunk?";
+    public static final String UPDATE_FAVOURITES_REQUEST_TAG = "me likey";
     public static final String VERY_SECRET_PASSWORD = "Nasze tajne haslo";
 
     private Singleton() {}

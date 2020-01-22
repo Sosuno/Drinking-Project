@@ -1,122 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/recipe"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <ImageButton
-        android:id="@+id/favourites_Button"
-        android:layout_width="63dp"
-        android:layout_height="48dp"
-
-        android:layout_centerHorizontal="false"
-        android:layout_marginStart="23dp"
-        android:layout_marginLeft="-94dp"
-        android:layout_marginBottom="13dp"
-
-
-        android:background="#FFFFFF"
-        android:contentDescription="@string/imgButton_content_description"
-        android:src="@drawable/favourites_state" />
-
-    <TextView
-        android:id="@+id/textViewDrinkName"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
+    <RelativeLayout
+        android:id="@+id/recipe"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:text="@string/exemplary_txt"
-        android:textAlignment="center"
-        android:textSize="35sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/drinkImg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewDrinkName"
+        <ImageButton
+            android:id="@+id/favourites_Button"
+            android:layout_width="62dp"
+            android:layout_height="63dp"
+            android:layout_alignBottom="@+id/drinkImg"
+            android:layout_centerHorizontal="false"
+            android:layout_marginStart="103dp"
 
-        android:contentDescription="@string/drinkImg_content_description" />
+            android:layout_marginBottom="18dp"
+            android:layout_toEndOf="@+id/drinkImg"
 
-    <TextView
-        android:id="@+id/textViewDescriptionTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:layout_below="@+id/drinkImg"
-        android:text="@string/DescriptionTitle"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/Description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:layout_below="@+id/textViewDescriptionTitle"
-        android:text="@string/exemplary_description"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/textViewIngredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:layout_below="@+id/Description"
-        android:text="@string/ingredients"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+            android:background="#FFFFFF"
+            android:contentDescription="@string/imgButton_content_description"
+            android:src="@drawable/favourites_state" />
 
-    <ListView
-        android:id="@+id/ingredients_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewIngredients"
-        android:paddingTop="10dp" />
-    <TextView
-        android:id="@+id/textViewRecipeTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:layout_below="@+id/ingredients_list"
-        android:text="@string/recipeTitle"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        <ImageButton
+            android:id="@+id/back_Button"
+            android:layout_width="63dp"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="false"
+            android:layout_marginStart="0dp"
 
-    <TextView
-        android:id="@+id/textViewRecipe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewRecipeTitle"
-        android:paddingBottom="10dp"
-        android:text="@string/recipe"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/glassTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:layout_below="@+id/textViewRecipe"
-        android:text="@string/glassTitle"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/glass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:layout_below="@+id/glassTitle"
-        android:text="@string/glass"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+            android:layout_marginBottom="13dp"
+            android:background="#FFFFFF"
+            android:contentDescription="@string/imgButton_content_description"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            />
 
-</RelativeLayout>
+
+        <TextView
+            android:id="@+id/textViewDrinkName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="50dp"
+            android:layout_toEndOf="@+id/drinkImg"
+            android:layout_toRightOf="@+id/drinkImg"
+            android:paddingBottom="10dp"
+            android:text="@string/exemplary_txt"
+            android:textAlignment="center"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/drinkImg"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@id/textViewDrinkName"
+            android:layout_marginStart="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"
+            android:contentDescription="@string/drinkImg_content_description" />
+
+        <TextView
+            android:id="@+id/textViewDescriptionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/drinkImg"
+            android:text="@string/DescriptionTitle"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/textViewDescriptionTitle"
+            android:text="@string/exemplary_description"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            />
+
+
+        <TextView
+            android:id="@+id/textViewRecipeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/Description"
+            android:text="@string/recipeTitle"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewRecipeTitle"
+            android:paddingBottom="10dp"
+            android:text="@string/recipe"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            />
+        <TextView
+            android:id="@+id/glassTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/textViewRecipe"
+            android:text="@string/glassTitle"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/glass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/glassTitle"
+            android:text="@string/glass"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            />
+        <TextView
+            android:id="@+id/textViewIngredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/glass"
+            android:text="@string/ingredients"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <com.drinkingTeam.drinkingProject.types.NonScrollListView
+            android:id="@+id/ingredients_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textViewIngredients"
+            android:paddingTop="10dp"
+            android:textAlignment="center">
+
+        </com.drinkingTeam.drinkingProject.types.NonScrollListView>
+
+
+    </RelativeLayout>
+</ScrollView>
