@@ -1,4 +1,4 @@
-package com.drinkingTeam.drinkingProject;
+package com.drinkingTeam.drinkingProject.types;
 
 public class Ingredient {
 

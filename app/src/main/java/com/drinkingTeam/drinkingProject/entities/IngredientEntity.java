@@ -1,6 +1,6 @@
 package com.drinkingTeam.drinkingProject.entities;
 
-import com.drinkingTeam.drinkingProject.Ingredient;
+import com.drinkingTeam.drinkingProject.types.Ingredient;
 
 public class IngredientEntity {
 

@@ -1,5 +1,6 @@
 package com.drinkingTeam.drinkingProject.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -7,29 +8,35 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.drinkingTeam.drinkingProject.Drink;
-import com.drinkingTeam.drinkingProject.IngredientsListAdapter;
+import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
+import com.drinkingTeam.drinkingProject.types.Drink;
+import com.drinkingTeam.drinkingProject.activities.listAdapters.IngredientsListAdapter;
+import com.drinkingTeam.drinkingProject.types.NonScrollListView;
 import com.drinkingTeam.drinkingProject.R;
+import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
 import com.google.gson.Gson;
+
+
 
 public class DrinksDisplayActivity extends AppCompatActivity {
 
     private Drink drink;
     private ImageButton fav;
+    private DrinksDbHelper dbHelper;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Gson gson = new Gson();
+        dbHelper = new DrinksDbHelper(this);
         String studentDataObjectAsAString = getIntent().getStringExtra("Drink");
-        boolean isFavourite = getIntent().getBooleanExtra("favourite", false);
+        final boolean isFavourite = getIntent().getBooleanExtra("favourite", false);
         drink = gson.fromJson(studentDataObjectAsAString, Drink.class);
         setContentView(R.layout.recipe);
         TextView textViewDrinkName = findViewById(R.id.textViewDrinkName);
@@ -52,14 +59,28 @@ public class DrinksDisplayActivity extends AppCompatActivity {
         fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(isFavourite) {
+                    dbHelper.removeFromFavourites(dbHelper.getWritableDatabase(), drink.getId());
+                    fav.setActivated(false);
+                }else {
+                    dbHelper.addToFavourites(dbHelper.getWritableDatabase(),new DrinkEntity(drink));
+                    fav.setActivated(true);
+                }
             }
         });
-        ListView ingredients = findViewById(R.id.ingredients_list);
-
+        NonScrollListView ingredients = findViewById(R.id.ingredients_list);
+        ingredients.setClickable(false);
         ingredients.setAdapter(adapter);
-        ///ingredients_list
 
 
+        ImageButton backBtn = findViewById(R.id.back_Button);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goBack = new Intent(DrinksDisplayActivity.this, MainActivity.class);
+                startActivity(goBack);
+            }
+        });
     }
+
 }

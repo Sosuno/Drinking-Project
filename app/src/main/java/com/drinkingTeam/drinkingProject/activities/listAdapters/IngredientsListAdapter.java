@@ -1,4 +1,4 @@
-package com.drinkingTeam.drinkingProject;
+package com.drinkingTeam.drinkingProject.activities.listAdapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.drinkingTeam.drinkingProject.types.Ingredient;
+import com.drinkingTeam.drinkingProject.R;
 
 import java.util.List;
 
@@ -44,4 +47,6 @@ public class IngredientsListAdapter extends ArrayAdapter<Ingredient> {
         return view;
 
     }
+
+
 }

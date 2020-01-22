@@ -53,9 +53,7 @@ public class UserDbHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_NAME,null,values);
     }
 
-    public void removeUser(SQLiteDatabase db ,long id) {
-        String selection = _ID + " = ?";
-        String[] selectionArgs = { id+"" };
+    public void removeUser(SQLiteDatabase db) {
         db.execSQL("delete from "+ TABLE_NAME);
     }
 

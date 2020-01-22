@@ -20,8 +20,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.drinkingTeam.drinkingProject.Drink;
-import com.drinkingTeam.drinkingProject.Ingredient;
+import com.drinkingTeam.drinkingProject.types.Drink;
+import com.drinkingTeam.drinkingProject.types.Ingredient;
 import com.drinkingTeam.drinkingProject.R;
 import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
 import com.drinkingTeam.drinkingProject.entities.UserEntity;
@@ -38,7 +38,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.provider.BaseColumns._ID;
 import static com.drinkingTeam.Singleton.HOST;
 import static com.drinkingTeam.Singleton.LOGIN;
 import static com.drinkingTeam.Singleton.LOGIN_REQUEST_TAG;
@@ -76,8 +75,8 @@ public class LoginActivity extends AppCompatActivity {
         final List<UserEntity> user = userDbHelper.getUser(userDbHelper.getReadableDatabase());
 
         if(user.size() > 0) {
-          //  Intent drinksDisplay = new Intent(LoginActivity.this, MainActivity.class);
-          //  startActivity(drinksDisplay);
+           Intent drinksDisplay = new Intent(LoginActivity.this, MainActivity.class);
+           startActivity(drinksDisplay);
         }
         drinksDbHelper.newUser(drinksDbHelper.getWritableDatabase());
         setContentView(R.layout.login);
@@ -188,7 +187,7 @@ public class LoginActivity extends AppCompatActivity {
 
         request.setTag(LOGIN_REQUEST_TAG);
         request.setShouldRetryServerErrors(false);
-        request.setRetryPolicy(new DefaultRetryPolicy(100, 1, 2));
+        request.setRetryPolicy(new DefaultRetryPolicy(1000, 1, 2));
         mQueue.add(request);
     }
 

@@ -1,8 +1,6 @@
-package com.drinkingTeam.drinkingProject;
+package com.drinkingTeam.drinkingProject.activities.listAdapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,8 +18,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.drinkingTeam.drinkingProject.types.Drink;
+import com.drinkingTeam.drinkingProject.R;
 import com.drinkingTeam.drinkingProject.activities.DrinksDisplayActivity;
-import com.drinkingTeam.drinkingProject.activities.MainActivity;
+import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
+import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
+import com.drinkingTeam.drinkingProject.tables.IngredientsDbHelper;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -38,7 +40,9 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
     private List<Drink> favsList;
     private Button seeMore;
 
-    //activity context
+    private DrinksDbHelper drinkDb;
+    private IngredientsDbHelper ingredientsDb;
+
     private Context context;
 
     //the layout resource file for the list items
@@ -52,6 +56,9 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         this.resource = resource;
         this.drinkList = drinkList;
         this.favsList = favs;
+        drinkDb= new DrinksDbHelper(context);
+        ingredientsDb= new IngredientsDbHelper(context);
+
     }
 
     //this will return the ListView Item as a View
@@ -62,18 +69,18 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(resource, null, false);
 
+        System.out.println("adapter size " + drinkList.size());
         if(drinkList.size() < 1) return new View(context);
 
         ImageView imageView = view.findViewById(R.id.imageView);
         TextView textViewName = view.findViewById(R.id.textViewName);
         TextView textViewTeam = view.findViewById(R.id.textViewTeam);
-
+        ImageButton imageButton = view.findViewById(R.id.favourites_Button);
 
         final Drink drink = drinkList.get(position);
         final boolean isFavourite = checkIfIsFavourite(drink,favsList);
 
         if(isFavourite) {
-            ImageButton imageButton = view.findViewById(R.id.favourites_Button);
             imageButton.setActivated(true);
         }
         seeMore = view.findViewById(R.id.buttonSeeMore);
@@ -94,40 +101,29 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
 
         imageView.setImageBitmap(bitmap);
         textViewName.setText(drink.getName());
-        textViewTeam.setText(drink.getId()+"");
+        textViewTeam.setText("");
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                favDrink(position,view);
+            }
+        });
+
         return view;
     }
 
-    //this method will remove the item from the list
-    private void removeHero(final int position) {
-        //Creating an alert dialog to confirm the deletion
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Are you sure you want to delete this?");
-
-        //if the response is positive in the alert
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                //removing the item
-                drinkList.remove(position);
-
-                //reloading the list
-                notifyDataSetChanged();
-            }
-        });
-
-        //if response is negative nothing is being done
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-        //creating and displaying the alert dialog
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+    private void favDrink(final int position,View view) {
+        ImageButton imageButton = view.findViewById(R.id.favourites_Button);
+        if(checkIfIsFavourite(drinkList.get(position),favsList)) {
+            imageButton.setActivated(false);
+            drinkDb.removeFromFavourites(drinkDb.getWritableDatabase(), removeFromFavList(position));
+        }else{
+            imageButton.setActivated(true);
+            drinkDb.addToFavourites(drinkDb.getWritableDatabase(),new DrinkEntity(drinkList.get(position)));
+            favsList.add(drinkList.get(position));
+        }
+        notifyDataSetChanged();
     }
 
     public void setDrinkList(List<Drink> drinkList) {
@@ -140,5 +136,16 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         }
         return false;
     }
+
+    private Long removeFromFavList(int position) {
+        for (Drink d: favsList) {
+            if(d.getName().equals(drinkList.get(position).getName())) {
+                favsList.remove(d);
+                return d.getId();
+            }
+        }
+        return 0L;
+    }
+
 
 }
