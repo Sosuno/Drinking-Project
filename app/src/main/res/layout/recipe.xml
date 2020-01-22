@@ -12,15 +12,19 @@
 
     <ImageButton
         android:id="@+id/favourites_Button"
-        android:layout_width="63dp"
-        android:layout_height="48dp"
+        android:layout_width="62dp"
+        android:layout_height="63dp"
+        android:layout_alignBottom="@+id/drinkImg"
         android:layout_centerHorizontal="false"
-        android:layout_marginStart="290dp"
+        android:layout_marginStart="103dp"
 
-        android:layout_marginBottom="13dp"
+        android:layout_marginBottom="18dp"
+        android:layout_toEndOf="@+id/drinkImg"
+
         android:background="#FFFFFF"
         android:contentDescription="@string/imgButton_content_description"
         android:src="@drawable/favourites_state" />
+
     <ImageButton
         android:id="@+id/back_Button"
         android:layout_width="63dp"
@@ -31,13 +35,20 @@
         android:layout_marginBottom="13dp"
         android:background="#FFFFFF"
         android:contentDescription="@string/imgButton_content_description"
-
+        android:src="@drawable/ic_arrow_back_black_24dp"
         />
+
 
     <TextView
         android:id="@+id/textViewDrinkName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="50dp"
+        android:layout_toEndOf="@+id/drinkImg"
+        android:layout_toRightOf="@+id/drinkImg"
         android:paddingBottom="10dp"
         android:text="@string/exemplary_txt"
         android:textAlignment="center"
@@ -46,10 +57,11 @@
 
     <ImageView
         android:id="@+id/drinkImg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_below="@id/textViewDrinkName"
 
+        android:layout_marginTop="-58dp"
         android:contentDescription="@string/drinkImg_content_description" />
 
     <TextView
@@ -60,7 +72,7 @@
         android:layout_below="@+id/drinkImg"
         android:text="@string/DescriptionTitle"
         android:textAlignment="center"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
     <TextView
         android:id="@+id/Description"
@@ -71,33 +83,18 @@
         android:text="@string/exemplary_description"
         android:textAlignment="center"
         android:textSize="15sp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/textViewIngredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:layout_below="@+id/Description"
-        android:text="@string/ingredients"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+         />
 
-    <ListView
-        android:id="@+id/ingredients_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewIngredients"
-        android:paddingTop="10dp" />
+
     <TextView
         android:id="@+id/textViewRecipeTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
-        android:layout_below="@+id/ingredients_list"
+        android:layout_below="@+id/Description"
         android:text="@string/recipeTitle"
         android:textAlignment="center"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView
@@ -109,7 +106,7 @@
         android:text="@string/recipe"
         android:textAlignment="center"
         android:textSize="15sp"
-        android:textStyle="bold" />
+         />
     <TextView
         android:id="@+id/glassTitle"
         android:layout_width="match_parent"
@@ -118,7 +115,7 @@
         android:layout_below="@+id/textViewRecipe"
         android:text="@string/glassTitle"
         android:textAlignment="center"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
     <TextView
         android:id="@+id/glass"
@@ -129,7 +126,28 @@
         android:text="@string/glass"
         android:textAlignment="center"
         android:textSize="15sp"
+         />
+    <TextView
+        android:id="@+id/textViewIngredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:layout_below="@+id/glass"
+        android:text="@string/ingredients"
+        android:textAlignment="center"
+        android:textSize="20sp"
         android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/ingredients_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_below="@+id/textViewIngredients"
+        android:paddingTop="10dp" >
+
+    </ListView>
+
 
 </RelativeLayout>
 </ScrollView>

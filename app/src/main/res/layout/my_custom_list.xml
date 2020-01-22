@@ -46,10 +46,10 @@
         android:layout_alignBottom="@+id/imageView"
         android:layout_centerHorizontal="false"
         android:layout_marginStart="23dp"
-        android:layout_marginLeft="23dp"
+
         android:layout_marginBottom="13dp"
         android:layout_toEndOf="@+id/imageView"
-        android:layout_toRightOf="@+id/imageView"
+
         android:background="#FFFFFF"
         android:contentDescription="@string/imgButton_content_description"
         android:src="@drawable/favourites_state" />
