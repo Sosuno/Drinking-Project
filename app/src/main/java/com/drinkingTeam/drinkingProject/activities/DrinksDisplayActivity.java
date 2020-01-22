@@ -29,7 +29,15 @@ public class DrinksDisplayActivity extends AppCompatActivity {
     private ImageButton fav;
     private DrinksDbHelper dbHelper;
 
-
+    /**
+     * gets drinks from database & check if tey are favorites
+     * sets recipe layout
+     * finds all elements in layout
+     * decodes img
+     * sets listener for favorites & back buttons
+     * blocks scroll in ingredients list
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

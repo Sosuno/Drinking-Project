@@ -18,14 +18,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.drinkingTeam.drinkingProject.types.Drink;
-import com.drinkingTeam.drinkingProject.types.Ingredient;
-import com.drinkingTeam.drinkingProject.activities.listAdapters.MyListAdapter;
 import com.drinkingTeam.drinkingProject.R;
+import com.drinkingTeam.drinkingProject.activities.listAdapters.MyListAdapter;
 import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
-import com.drinkingTeam.drinkingProject.tables.IngredientsDbHelper;
 import com.drinkingTeam.drinkingProject.tables.IngredientsReaderContract;
 import com.drinkingTeam.drinkingProject.tables.UserDbHelper;
+import com.drinkingTeam.drinkingProject.types.Drink;
+import com.drinkingTeam.drinkingProject.types.Ingredient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -64,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
     private UserDbHelper userDb;
     private Context cxt;
     private RequestQueue mQueue;
-
+    /**
+     * sets bottom navigation listener
+     */
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -94,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * sets activity_main layout
+     * finds navigation(bottom)
+     * creates an action bar button (logout)
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,14 +118,20 @@ public class MainActivity extends AppCompatActivity {
         drinks = getDrinks();
     }
 
-    // create an action bar button
+    /**
+     * inflates menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.app_bar, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    // handle button activities
+    /**
+     *  handle button activities
+      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -128,11 +141,19 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * gets all the drinks
+     * @return list of drinks
+     */
     public List<Drink> getDrinks() {
         drinksFromJson(this);
         return drinks;
     }
 
+    /**
+     * loads drinks from json
+     * @param context
+     */
     private void drinksFromJson(final Context context) {
         String url = HOST + GET_DRINKS;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -200,10 +221,18 @@ public class MainActivity extends AppCompatActivity {
         mQueue.add(request);
     }
 
+    /**
+     * adds loeded drinks to list to be displayed
+     * @param d
+     */
     private void addToDrinks(Drink d){
         drinks.add(d);
     }
 
+    /**
+     * handles logout
+     * removes from phone's database
+     */
     private void logout() {
         userDb.removeUser(userDb.getWritableDatabase());
         Intent loginDisplay = new Intent(MainActivity.this, LoginActivity.class);
