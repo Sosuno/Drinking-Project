@@ -21,6 +21,7 @@ import com.drinkingTeam.drinkingProject.R;
 import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
 import com.google.gson.Gson;
 
+import static com.drinkingTeam.drinkingProject.activities.MainActivity.favourites_update;
 
 
 public class DrinksDisplayActivity extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class DrinksDisplayActivity extends AppCompatActivity {
     private Drink drink;
     private ImageButton fav;
     private DrinksDbHelper dbHelper;
+    private boolean isFavourite;
 
 
     @Override
@@ -36,7 +38,7 @@ public class DrinksDisplayActivity extends AppCompatActivity {
         Gson gson = new Gson();
         dbHelper = new DrinksDbHelper(this);
         String studentDataObjectAsAString = getIntent().getStringExtra("Drink");
-        final boolean isFavourite = getIntent().getBooleanExtra("favourite", false);
+        isFavourite = getIntent().getBooleanExtra("favourite", false);
         drink = gson.fromJson(studentDataObjectAsAString, Drink.class);
         setContentView(R.layout.recipe);
         TextView textViewDrinkName = findViewById(R.id.textViewDrinkName);
@@ -60,11 +62,15 @@ public class DrinksDisplayActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(isFavourite) {
+                    isFavourite = false;
                     dbHelper.removeFromFavourites(dbHelper.getWritableDatabase(), drink.getId());
                     fav.setActivated(false);
+                    favourites_update(dbHelper.getAllFavourites(dbHelper.getReadableDatabase()));
                 }else {
+                    isFavourite = true;
                     dbHelper.addToFavourites(dbHelper.getWritableDatabase(),new DrinkEntity(drink));
                     fav.setActivated(true);
+                    favourites_update(dbHelper.getAllFavourites(dbHelper.getReadableDatabase()));
                 }
             }
         });

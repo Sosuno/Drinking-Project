@@ -3,6 +3,7 @@ package com.drinkingTeam.drinkingProject.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -63,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
     private MyListAdapter adapter2;
     private ListView listView;
     private DrinksDbHelper drinkDb;
-    private UserDbHelper userDb;
+    private static UserDbHelper userDb;
     private Context cxt;
-    private RequestQueue mQueue;
+    private static RequestQueue mQueue;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -85,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
                 case R.id.navigation_dashboard:
                     favdrinks = drinkDb.getAllFavourites(drinkDb.getReadableDatabase());
-                    favourites_update();
                     if(favdrinks.size() == 0) {
                         error(cxt, R.string.no_favourites);
                     }
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(loginDisplay);
     }
 
-    private void favourites_update() {
+    public static void favourites_update(final List<Drink> favdrinks) {
         String url = HOST + UPDATE_FAVOURITES;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, null,
                 new Response.Listener<JSONObject>() {
@@ -232,8 +232,9 @@ public class MainActivity extends AppCompatActivity {
             public byte[] getBody() {
                 List<Long> favIds = new ArrayList<>();
                 for (Drink d: favdrinks) favIds.add(d.getId());
-                String your_string_json = "{ \"favourites\": \"" + favIds + ",\"}" +
-                        "\"username\": \"" + userDb.getUser(userDb.getReadableDatabase()).get(0).getUsername();
+                String your_string_json = "{ \"favourites\": " + favIds + "," +
+                        "\"username\": \"" + userDb.getUser(userDb.getReadableDatabase()).get(0).getUsername() + "\"}";
+                System.out.println(your_string_json);
                 return your_string_json.getBytes();
             }
 

@@ -43,6 +43,7 @@ import static com.drinkingTeam.Singleton.HOST;
 import static com.drinkingTeam.Singleton.UPDATE_FAVOURITES;
 import static com.drinkingTeam.Singleton.UPDATE_FAVOURITES_REQUEST_TAG;
 import static com.drinkingTeam.Singleton.VERY_SECRET_PASSWORD;
+import static com.drinkingTeam.drinkingProject.activities.MainActivity.favourites_update;
 
 /**
  * Created by Belal on 9/14/2017.
@@ -134,10 +135,12 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         if(checkIfIsFavourite(drinkList.get(position),favsList)) {
             imageButton.setActivated(false);
             drinkDb.removeFromFavourites(drinkDb.getWritableDatabase(), removeFromFavList(position));
+            favourites_update(favsList);
         }else{
             imageButton.setActivated(true);
             drinkDb.addToFavourites(drinkDb.getWritableDatabase(),new DrinkEntity(drinkList.get(position)));
             favsList.add(drinkList.get(position));
+            favourites_update(favsList);
         }
         notifyDataSetChanged();
     }
