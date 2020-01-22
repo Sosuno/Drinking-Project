@@ -6,5 +6,6 @@
     <!-- Settings, should always be in the overflow -->
     <item android:id="@+id/action_settings"
         android:title="@string/action_logout"
+        android:icon="@drawable/ic_exit_to_app_black_24dp"
         app:showAsAction="never"/>
 </menu>
