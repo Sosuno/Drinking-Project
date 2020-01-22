@@ -40,6 +40,8 @@ import java.util.Map;
 import static com.drinkingTeam.Singleton.GET_DRINKS;
 import static com.drinkingTeam.Singleton.GET_DRINKS_REQUEST_TAG;
 import static com.drinkingTeam.Singleton.HOST;
+import static com.drinkingTeam.Singleton.UPDATE_FAVOURITES;
+import static com.drinkingTeam.Singleton.UPDATE_FAVOURITES_REQUEST_TAG;
 import static com.drinkingTeam.Singleton.VERY_SECRET_PASSWORD;
 import static com.drinkingTeam.Singleton.error;
 import static com.drinkingTeam.drinkingProject.tables.DrinksReaderContract.DrinksTable.COLUMN_NAME_DESCRIPTION;
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
                 case R.id.navigation_dashboard:
                     favdrinks = drinkDb.getAllFavourites(drinkDb.getReadableDatabase());
+                    favourites_update();
                     if(favdrinks.size() == 0) {
                         error(cxt, R.string.no_favourites);
                     }
@@ -208,5 +211,42 @@ public class MainActivity extends AppCompatActivity {
         userDb.removeUser(userDb.getWritableDatabase());
         Intent loginDisplay = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(loginDisplay);
+    }
+
+    private void favourites_update() {
+        String url = HOST + UPDATE_FAVOURITES;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        mQueue.cancelAll(UPDATE_FAVOURITES_REQUEST_TAG);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                mQueue.cancelAll(UPDATE_FAVOURITES_REQUEST_TAG);
+            }
+        }) {
+            @Override
+            public byte[] getBody() {
+                List<Long> favIds = new ArrayList<>();
+                for (Drink d: favdrinks) favIds.add(d.getId());
+                String your_string_json = "{ \"favourites\": \"" + favIds + ",\"}" +
+                        "\"username\": \"" + userDb.getUser(userDb.getReadableDatabase()).get(0).getUsername();
+                return your_string_json.getBytes();
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("authorization", VERY_SECRET_PASSWORD);
+                return headers;
+            }
+        };
+        request.setTag(UPDATE_FAVOURITES_REQUEST_TAG);
+        request.setShouldRetryServerErrors(false);
+        request.setRetryPolicy(new DefaultRetryPolicy(1000, 1, 2));
+        mQueue.add(request);
     }
 }

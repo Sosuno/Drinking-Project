@@ -18,6 +18,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.drinkingTeam.drinkingProject.types.Drink;
 import com.drinkingTeam.drinkingProject.R;
 import com.drinkingTeam.drinkingProject.activities.DrinksDisplayActivity;
@@ -26,7 +32,17 @@ import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
 import com.drinkingTeam.drinkingProject.tables.IngredientsDbHelper;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.drinkingTeam.Singleton.HOST;
+import static com.drinkingTeam.Singleton.UPDATE_FAVOURITES;
+import static com.drinkingTeam.Singleton.UPDATE_FAVOURITES_REQUEST_TAG;
+import static com.drinkingTeam.Singleton.VERY_SECRET_PASSWORD;
 
 /**
  * Created by Belal on 9/14/2017.
@@ -41,7 +57,7 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
     private Button seeMore;
 
     private DrinksDbHelper drinkDb;
-    private IngredientsDbHelper ingredientsDb;
+
 
     private Context context;
 
@@ -57,7 +73,7 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         this.drinkList = drinkList;
         this.favsList = favs;
         drinkDb= new DrinksDbHelper(context);
-        ingredientsDb= new IngredientsDbHelper(context);
+
 
     }
 
@@ -146,6 +162,4 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         }
         return 0L;
     }
-
-
 }
