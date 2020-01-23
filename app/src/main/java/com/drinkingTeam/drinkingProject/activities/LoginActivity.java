@@ -23,7 +23,6 @@ import com.android.volley.toolbox.Volley;
 import com.drinkingTeam.drinkingProject.types.Drink;
 import com.drinkingTeam.drinkingProject.types.Ingredient;
 import com.drinkingTeam.drinkingProject.R;
-import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
 import com.drinkingTeam.drinkingProject.entities.UserEntity;
 import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
 import com.drinkingTeam.drinkingProject.tables.IngredientsReaderContract;
@@ -77,8 +76,9 @@ public class LoginActivity extends AppCompatActivity {
         if(user.size() > 0) {
            Intent drinksDisplay = new Intent(LoginActivity.this, MainActivity.class);
            startActivity(drinksDisplay);
+        }else {
+            drinksDbHelper.newUser(drinksDbHelper.getWritableDatabase());
         }
-        drinksDbHelper.newUser(drinksDbHelper.getWritableDatabase());
         setContentView(R.layout.login);
         setUpTextListeners();
 
@@ -128,7 +128,6 @@ public class LoginActivity extends AppCompatActivity {
                                 drink.setRecipe(json.getString(COLUMN_NAME_RECIPE));
                                 JSONArray ingredientsArray = json.getJSONArray(IngredientsReaderContract.IngredientsTable.TABLE_NAME);
                                 List<Ingredient> ingredients = new ArrayList<>();
-                                System.out.println(ingredientsArray.length());
                                 for (int j = 0; j < ingredientsArray.length(); j++) {
                                     JSONObject jsonIngredient = ingredientsArray.getJSONObject(j);
                                     Ingredient ingredient = new Ingredient();
@@ -139,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                                     ingredients.add(ingredient);
                                 }
                                 drink.setIngredients(ingredients);
-                                drinksDbHelper.addToFavourites(drinksDbHelper.getWritableDatabase(),new DrinkEntity(drink));
+                                drinksDbHelper.addToFavourites(drinksDbHelper.getWritableDatabase(),drink);
                             }
                             String email = response.getString(COLUMN_NAME_EMAIL);
                             userDbHelper.addUser(userDbHelper.getWritableDatabase(),new UserEntity(null,login,password,email));

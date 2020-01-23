@@ -36,7 +36,6 @@ public class IngredientsDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + IngredientsReaderContract.IngredientsTable.TABLE_NAME + " (" +
                     IngredientsReaderContract.IngredientsTable._ID + " INTEGER PRIMARY KEY," +
@@ -49,7 +48,6 @@ public class IngredientsDbHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + IngredientsReaderContract.IngredientsTable.TABLE_NAME;
 
     public Long addToIngredients(SQLiteDatabase db, IngredientEntity ingredientEntity){
-
         ContentValues values = new ContentValues();
         values.put(IngredientsReaderContract.IngredientsTable.COLUMN_NAME_NAME, ingredientEntity.getName());
         values.put(IngredientsReaderContract.IngredientsTable.COLUMN_NAME_QUANTITY, ingredientEntity.getQuantity());
@@ -59,17 +57,19 @@ public class IngredientsDbHelper extends SQLiteOpenHelper {
     }
 
     public int removeDrinkIngredients(SQLiteDatabase db ,long id) {
-        String selection = IngredientsReaderContract.IngredientsTable._ID + " = ?";
+        String selection = IngredientsReaderContract.IngredientsTable.COLUMN_NAME_DRINK_ID + " = ?";
         String[] selectionArgs = { id+"" };
         return db.delete(IngredientsReaderContract.IngredientsTable.TABLE_NAME,selection,selectionArgs);
     }
 
     public List<Ingredient> getIngredientsForDrink(SQLiteDatabase db, Long drinkId){
         String[] projection = {
+                IngredientsReaderContract.IngredientsTable._ID,
                 IngredientsReaderContract.IngredientsTable.COLUMN_NAME_NAME,
                 IngredientsReaderContract.IngredientsTable.COLUMN_NAME_QUANTITY,
                 IngredientsReaderContract.IngredientsTable.COLUMN_NAME_UNITS,
         };
+
         String selection = IngredientsReaderContract.IngredientsTable.COLUMN_NAME_DRINK_ID + " = ?";
         String[] args = { drinkId+""};
 
@@ -82,6 +82,7 @@ public class IngredientsDbHelper extends SQLiteOpenHelper {
                 null,
                 null
         );
+
         List<Ingredient> ingredients = new ArrayList<>();
         while(cursor.moveToNext()) {
             Long ingredient = cursor.getLong(cursor.getColumnIndexOrThrow(IngredientsReaderContract.IngredientsTable._ID));

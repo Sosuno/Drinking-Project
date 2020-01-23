@@ -30,6 +30,7 @@ public class DrinksDisplayActivity extends AppCompatActivity {
     private ImageButton fav;
     private DrinksDbHelper dbHelper;
     private boolean isFavourite;
+    private boolean backScreen;
 
 
     @Override
@@ -39,6 +40,7 @@ public class DrinksDisplayActivity extends AppCompatActivity {
         dbHelper = new DrinksDbHelper(this);
         String studentDataObjectAsAString = getIntent().getStringExtra("Drink");
         isFavourite = getIntent().getBooleanExtra("favourite", false);
+        backScreen = getIntent().getBooleanExtra("backScreen",false);
         drink = gson.fromJson(studentDataObjectAsAString, Drink.class);
         setContentView(R.layout.recipe);
         TextView textViewDrinkName = findViewById(R.id.textViewDrinkName);
@@ -68,7 +70,7 @@ public class DrinksDisplayActivity extends AppCompatActivity {
                     favourites_update(dbHelper.getAllFavourites(dbHelper.getReadableDatabase()));
                 }else {
                     isFavourite = true;
-                    dbHelper.addToFavourites(dbHelper.getWritableDatabase(),new DrinkEntity(drink));
+                    dbHelper.addToFavourites(dbHelper.getWritableDatabase(), drink);
                     fav.setActivated(true);
                     favourites_update(dbHelper.getAllFavourites(dbHelper.getReadableDatabase()));
                 }
@@ -83,7 +85,9 @@ public class DrinksDisplayActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent goBack = new Intent(DrinksDisplayActivity.this, MainActivity.class);
+                if (backScreen) goBack.putExtra("backScreen", true);
                 startActivity(goBack);
             }
         });
