@@ -21,6 +21,7 @@ import com.drinkingTeam.drinkingProject.R;
 import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
 import com.google.gson.Gson;
 
+import static com.drinkingTeam.drinkingProject.activities.MainActivity.favourites_update;
 
 
 public class DrinksDisplayActivity extends AppCompatActivity {
@@ -28,6 +29,8 @@ public class DrinksDisplayActivity extends AppCompatActivity {
     private Drink drink;
     private ImageButton fav;
     private DrinksDbHelper dbHelper;
+    private boolean isFavourite;
+    private boolean backScreen;
 
     /**
      * gets drinks from database & check if tey are favorites
@@ -44,7 +47,8 @@ public class DrinksDisplayActivity extends AppCompatActivity {
         Gson gson = new Gson();
         dbHelper = new DrinksDbHelper(this);
         String studentDataObjectAsAString = getIntent().getStringExtra("Drink");
-        final boolean isFavourite = getIntent().getBooleanExtra("favourite", false);
+        isFavourite = getIntent().getBooleanExtra("favourite", false);
+        backScreen = getIntent().getBooleanExtra("backScreen",false);
         drink = gson.fromJson(studentDataObjectAsAString, Drink.class);
         setContentView(R.layout.recipe);
         TextView textViewDrinkName = findViewById(R.id.textViewDrinkName);
@@ -68,11 +72,15 @@ public class DrinksDisplayActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(isFavourite) {
+                    isFavourite = false;
                     dbHelper.removeFromFavourites(dbHelper.getWritableDatabase(), drink.getId());
                     fav.setActivated(false);
+                    favourites_update(dbHelper.getAllFavourites(dbHelper.getReadableDatabase()));
                 }else {
-                    dbHelper.addToFavourites(dbHelper.getWritableDatabase(),new DrinkEntity(drink));
+                    isFavourite = true;
+                    dbHelper.addToFavourites(dbHelper.getWritableDatabase(), drink);
                     fav.setActivated(true);
+                    favourites_update(dbHelper.getAllFavourites(dbHelper.getReadableDatabase()));
                 }
             }
         });
@@ -85,7 +93,9 @@ public class DrinksDisplayActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent goBack = new Intent(DrinksDisplayActivity.this, MainActivity.class);
+                if (backScreen) goBack.putExtra("backScreen", true);
                 startActivity(goBack);
             }
         });

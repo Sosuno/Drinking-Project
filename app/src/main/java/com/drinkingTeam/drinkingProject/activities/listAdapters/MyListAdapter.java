@@ -18,6 +18,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.drinkingTeam.drinkingProject.types.Drink;
 import com.drinkingTeam.drinkingProject.R;
 import com.drinkingTeam.drinkingProject.activities.DrinksDisplayActivity;
@@ -26,7 +32,18 @@ import com.drinkingTeam.drinkingProject.tables.DrinksDbHelper;
 import com.drinkingTeam.drinkingProject.tables.IngredientsDbHelper;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.drinkingTeam.Singleton.HOST;
+import static com.drinkingTeam.Singleton.UPDATE_FAVOURITES;
+import static com.drinkingTeam.Singleton.UPDATE_FAVOURITES_REQUEST_TAG;
+import static com.drinkingTeam.Singleton.VERY_SECRET_PASSWORD;
+import static com.drinkingTeam.drinkingProject.activities.MainActivity.favourites_update;
 
 /**
  * Created by Belal on 9/14/2017.
@@ -38,10 +55,10 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
     //the list values in the List of type hero
     private List<Drink> drinkList;
     private List<Drink> favsList;
-    private Button seeMore;
+    private boolean inFavourites;
 
     private DrinksDbHelper drinkDb;
-    private IngredientsDbHelper ingredientsDb;
+
 
     private Context context;
 
@@ -50,14 +67,14 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
 
 
     //constructor initializing the values
-    public MyListAdapter(Context context, int resource, List<Drink> drinkList, List<Drink> favs) {
+    public MyListAdapter(Context context, int resource, List<Drink> drinkList, List<Drink> favs, boolean inFavourites) {
         super(context, resource, drinkList);
         this.context = context;
         this.resource = resource;
         this.drinkList = drinkList;
         this.favsList = favs;
         drinkDb= new DrinksDbHelper(context);
-        ingredientsDb= new IngredientsDbHelper(context);
+        this.inFavourites = inFavourites;
 
     }
 
@@ -69,7 +86,6 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(resource, null, false);
 
-        System.out.println("adapter size " + drinkList.size());
         if(drinkList.size() < 1) return new View(context);
 
         ImageView imageView = view.findViewById(R.id.imageView);
@@ -83,7 +99,7 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         if(isFavourite) {
             imageButton.setActivated(true);
         }
-        seeMore = view.findViewById(R.id.buttonSeeMore);
+        Button seeMore = view.findViewById(R.id.buttonSeeMore);
         seeMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +108,7 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
                 String drinkToTransfer = gson.toJson(drink);
                 displayDrink.putExtra("Drink",drinkToTransfer);
                 displayDrink.putExtra("favourite", isFavourite);
+                displayDrink.putExtra("backScreen", inFavourites);
                 context.startActivity(displayDrink);
             }
         });
@@ -102,14 +119,13 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         imageView.setImageBitmap(bitmap);
         textViewName.setText(drink.getName());
         textViewTeam.setText("");
-
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 favDrink(position,view);
             }
         });
-
         return view;
     }
 
@@ -118,12 +134,13 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
         if(checkIfIsFavourite(drinkList.get(position),favsList)) {
             imageButton.setActivated(false);
             drinkDb.removeFromFavourites(drinkDb.getWritableDatabase(), removeFromFavList(position));
+            favourites_update(favsList);
         }else{
             imageButton.setActivated(true);
-            drinkDb.addToFavourites(drinkDb.getWritableDatabase(),new DrinkEntity(drinkList.get(position)));
+            drinkDb.addToFavourites(drinkDb.getWritableDatabase(),drinkList.get(position));
             favsList.add(drinkList.get(position));
+            favourites_update(favsList);
         }
-        notifyDataSetChanged();
     }
 
     public void setDrinkList(List<Drink> drinkList) {
@@ -132,20 +149,20 @@ public class MyListAdapter extends ArrayAdapter<Drink> {
 
     public boolean checkIfIsFavourite(Drink drinks, List<Drink> favs) {
         for (Drink d:favs) {
-            if(d.getName().equals(drinks.getName())) return true;
+            if(d.getId().equals(drinks.getId())) return true;
         }
         return false;
     }
 
     private Long removeFromFavList(int position) {
         for (Drink d: favsList) {
-            if(d.getName().equals(drinkList.get(position).getName())) {
+            if(d.getId().equals(drinkList.get(position).getId())) {
                 favsList.remove(d);
+                if (inFavourites) drinkList = favsList;
+                notifyDataSetChanged();
                 return d.getId();
             }
         }
         return 0L;
     }
-
-
 }
