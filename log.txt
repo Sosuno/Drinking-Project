@@ -1,0 +1,156 @@
+  bash arg: -p
+  bash arg: com.example.drinkingproject
+  bash arg: -v
+  bash arg: 500
+:Monkey: seed=1579867120637 count=500
+:AllowPackage: com.example.drinkingproject
+:IncludeCategory: android.intent.category.LAUNCHER
+:IncludeCategory: android.intent.category.MONKEY
+// Event percentages:
+//   0: 15.0%
+//   1: 10.0%
+//   2: 2.0%
+//   3: 15.0%
+//   4: -0.0%
+//   5: -0.0%
+//   6: 25.0%
+//   7: 15.0%
+//   8: 2.0%
+//   9: 2.0%
+//   10: 1.0%
+//   11: 13.0%
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=com.example.drinkingproject/com.drinkingTeam.drinkingProject.activities.LoginActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.example.drinkingproject/com.drinkingTeam.drinkingProject.activities.LoginActivity } in package com.example.drinkingproject
+:Switch: #Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=com.example.drinkingproject/com.drinkingTeam.drinkingProject.activities.LoginActivity;end
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.example.drinkingproject/com.drinkingTeam.drinkingProject.activities.LoginActivity } in package com.example.drinkingproject
+:Sending Touch (ACTION_DOWN): 0:(728.0,1095.0)
+:Sending Touch (ACTION_UP): 0:(725.54535,1105.3695)
+:Sending Touch (ACTION_DOWN): 0:(605.0,1491.0)
+:Sending Touch (ACTION_UP): 0:(596.41705,1490.5779)
+:Sending Touch (ACTION_DOWN): 0:(36.0,1619.0)
+:Sending Touch (ACTION_UP): 0:(58.69596,1586.9164)
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.HOME] cmp=com.google.android.apps.nexuslauncher/.NexusLauncherActivity } in package com.google.android.apps.nexuslauncher
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-5.0)
+:Sending Touch (ACTION_DOWN): 0:(762.0,1222.0)
+:Sending Touch (ACTION_UP): 0:(775.0374,1214.2219)
+:Sending Touch (ACTION_DOWN): 0:(682.0,1000.0)
+:Sending Touch (ACTION_UP): 0:(662.07996,1001.9422)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-3.0)
+    // Rejecting start of Intent { act=com.android.intent.action.SHOW_BRIGHTNESS_DIALOG cmp=com.android.systemui/.settings.BrightnessDialog } in package com.android.systemui
+:Sending Touch (ACTION_DOWN): 0:(40.0,1725.0)
+:Sending Touch (ACTION_UP): 0:(40.13013,1738.5542)
+:Sending Touch (ACTION_DOWN): 0:(750.0,465.0)
+:Sending Touch (ACTION_UP): 0:(776.7248,432.66214)
+:Sending Touch (ACTION_DOWN): 0:(916.0,284.0)
+:Sending Touch (ACTION_UP): 0:(886.3466,355.89636)
+:Sending Touch (ACTION_DOWN): 0:(202.0,1636.0)
+:Sending Touch (ACTION_UP): 0:(207.92041,1630.2236)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,-1.0)
+    // Allowing start of Intent { act=android.intent.action.MAIN cat=[android.intent.category.HOME] cmp=com.google.android.apps.nexuslauncher/.NexusLauncherActivity } in package com.google.android.apps.nexuslauncher
+    //[calendar_time:2020-01-22 21:22:57.928  system_uptime:145086481]
+    // Sending event #100
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Touch (ACTION_DOWN): 0:(928.0,1475.0)
+:Sending Touch (ACTION_UP): 0:(926.3374,1465.6472)
+:Sending Touch (ACTION_DOWN): 0:(908.0,797.0)
+:Sending Touch (ACTION_UP): 0:(904.06934,793.67346)
+:Sending Touch (ACTION_DOWN): 0:(411.0,401.0)
+:Sending Touch (ACTION_UP): 0:(411.95847,391.30478)
+    // Injection Failed
+:Sending Touch (ACTION_DOWN): 0:(452.0,1377.0)
+:Sending Touch (ACTION_UP): 0:(460.7332,1377.1134)
+    // Rejecting start of Intent { act=android.intent.action.APPLICATION_PREFERENCES pkg=com.google.android.apps.nexuslauncher cmp=com.google.android.apps.nexuslauncher/com.android.launcher3.settings.SettingsActivity } in package com.google.android.apps.nexuslauncher
+:Sending Touch (ACTION_DOWN): 0:(151.0,598.0)
+:Sending Touch (ACTION_UP): 0:(191.08572,610.08685)
+:Sending Flip keyboardOpen=false
+Got IOException performing flipjava.io.FileNotFoundException: /dev/input/event0: open failed: EACCES (Permission denied)
+    // Injection Failed
+    // Rejecting start of Intent { act=android.intent.action.CALL_BUTTON cmp=com.android.dialer/.main.impl.MainActivity } in package com.android.dialer
+:Sending Touch (ACTION_DOWN): 0:(140.0,571.0)
+:Sending Touch (ACTION_UP): 0:(143.23538,575.1092)
+:Sending Trackball (ACTION_MOVE): 0:(0.0,-3.0)
+:Sending Touch (ACTION_DOWN): 0:(498.0,1751.0)
+:Sending Touch (ACTION_UP): 0:(486.91983,1722.6809)
+:Sending Touch (ACTION_DOWN): 0:(27.0,95.0)
+:Sending Touch (ACTION_UP): 0:(23.997223,103.5403)
+:Sending Touch (ACTION_DOWN): 0:(884.0,689.0)
+:Sending Touch (ACTION_UP): 0:(981.154,583.93933)
+:Sending Trackball (ACTION_MOVE): 0:(-3.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(93.0,71.0)
+:Sending Touch (ACTION_UP): 0:(87.3875,72.42654)
+    //[calendar_time:2020-01-22 21:22:59.017  system_uptime:145087570]
+    // Sending event #200
+    //[calendar_time:2020-01-22 21:22:59.017  system_uptime:145087570]
+    // Sending event #200
+:Sending Touch (ACTION_DOWN): 0:(94.0,619.0)
+:Sending Touch (ACTION_UP): 0:(95.43129,619.0183)
+:Sending Touch (ACTION_DOWN): 0:(304.0,1214.0)
+:Sending Touch (ACTION_UP): 0:(313.73282,1169.2402)
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,-4.0)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,2.0)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,1.0)
+:Sending Touch (ACTION_DOWN): 0:(280.0,181.0)
+:Sending Touch (ACTION_UP): 0:(287.7184,181.31398)
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-5.0)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,1.0)
+:Sending Touch (ACTION_DOWN): 0:(747.0,1494.0)
+:Sending Touch (ACTION_UP): 0:(751.5342,1492.0742)
+:Sending Trackball (ACTION_MOVE): 0:(-1.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(548.0,1596.0)
+:Sending Touch (ACTION_UP): 0:(535.87225,1611.443)
+    //[calendar_time:2020-01-22 21:23:00.897  system_uptime:145089450]
+    // Sending event #300
+    //[calendar_time:2020-01-22 21:23:00.898  system_uptime:145089451]
+    // Sending event #300
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-2.0)
+:Sending Trackball (ACTION_UP): 0:(0.0,0.0)
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-4.0)
+:Sending Touch (ACTION_DOWN): 0:(682.0,863.0)
+:Sending Touch (ACTION_UP): 0:(690.11255,865.8743)
+:Sending Touch (ACTION_DOWN): 0:(349.0,1629.0)
+:Sending Touch (ACTION_UP): 0:(281.9065,1575.4865)
+:Sending Touch (ACTION_DOWN): 0:(489.0,141.0)
+:Sending Touch (ACTION_UP): 0:(483.78604,140.3436)
+:Sending Touch (ACTION_DOWN): 0:(666.0,26.0)
+:Sending Touch (ACTION_UP): 0:(649.2884,12.913793)
+:Sending Touch (ACTION_DOWN): 0:(136.0,1598.0)
+:Sending Touch (ACTION_UP): 0:(131.86526,1598.8738)
+:Sending Trackball (ACTION_MOVE): 0:(4.0,4.0)
+:Sending Touch (ACTION_DOWN): 0:(754.0,1074.0)
+:Sending Touch (ACTION_UP): 0:(767.28,1071.9834)
+:Sending Trackball (ACTION_MOVE): 0:(-2.0,-2.0)
+:Sending Trackball (ACTION_MOVE): 0:(1.0,-3.0)
+    //[calendar_time:2020-01-22 21:23:02.214  system_uptime:145090766]
+    // Sending event #400
+    //[calendar_time:2020-01-22 21:23:02.214  system_uptime:145090767]
+    // Sending event #400
+:Sending Trackball (ACTION_MOVE): 0:(-4.0,1.0)
+:Sending Touch (ACTION_DOWN): 0:(774.0,254.0)
+:Sending Touch (ACTION_UP): 0:(773.94324,266.35718)
+:Sending Touch (ACTION_DOWN): 0:(307.0,1607.0)
+:Sending Touch (ACTION_UP): 0:(306.8579,1594.3964)
+    // Rejecting start of Intent { act=android.intent.action.MAIN dat=agsa:/data?type=searchnow.TYPE_SEARCHNOW&inputProto=CAQQAYgBAJABAZoBJmFuZC5nc2EubGF1bmNoZXIuaG9tZXNjcmVlbi5hcHBzc2VhcmNoogGSARKP
+ARABGP////8HIAAoBSjJuAI4AUgAUAFYAIABAKABAKgBALABAMABAMgBANABAIACAYgCAJACAJoC
+VlRoaXMgc2VhcmNoIGlzIHJlbGF0ZWQgdG8gd2hhdCB5b3XigJlyZSB0eXBpbmcgYW5kIHlvdXIg
+cHJldmlvdXMgd2ViIGFuZCBhcHAgYWN0aXZpdHku6AH///////////8B8AEA
+&id=359394629452 cmp=com.google.android.googlequicksearchbox/com.google.android.apps.gsa.searchnow.SearchNowActivity } in package com.google.android.googlequicksearchbox
+:Sending Trackball (ACTION_MOVE): 0:(4.0,-2.0)
+:Sending Touch (ACTION_DOWN): 0:(1009.0,374.0)
+:Sending Touch (ACTION_UP): 0:(1068.5231,303.35236)
+:Sending Touch (ACTION_DOWN): 0:(878.0,835.0)
+:Sending Touch (ACTION_UP): 0:(880.34094,838.8728)
+:Sending Touch (ACTION_DOWN): 0:(903.0,619.0)
+:Sending Touch (ACTION_UP): 0:(1002.1469,593.1215)
+:Sending Touch (ACTION_DOWN): 0:(27.0,240.0)
+:Sending Touch (ACTION_UP): 0:(48.245285,278.69495)
+:Sending Touch (ACTION_DOWN): 0:(805.0,48.0)
+:Sending Touch (ACTION_UP): 0:(796.28937,94.33214)
+:Sending Trackball (ACTION_MOVE): 0:(-5.0,2.0)
+    // Rejecting start of Intent { cmp=com.google.android.setupwizard/.deferred.DeferredTrampolineActivity } in package com.google.android.setupwizard
+:Sending Touch (ACTION_DOWN): 0:(339.0,759.0)
+:Sending Touch (ACTION_UP): 0:(322.43054,768.3533)
+Events injected: 500
+:Sending rotation degree=0, persist=false
+:Dropped: keys=1 pointers=0 trackballs=0 flips=1 rotations=0
+## Network stats: elapsed time=6267ms (0ms mobile, 0ms wifi, 6267ms not connected)
+// Monkey finished

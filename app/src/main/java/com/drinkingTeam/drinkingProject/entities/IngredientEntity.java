@@ -18,11 +18,12 @@ public class IngredientEntity {
         this.drinkId = drinkId;
     }
 
-    public IngredientEntity(Ingredient ingredient) {
+    public IngredientEntity(Ingredient ingredient, Long drinkId) {
         this.id = ingredient.getId();
         this.name = ingredient.getName();
         this.quantity = ingredient.getQuantity();
         this.units = ingredient.getUnits();
+        this.drinkId = drinkId;
     }
 
     public Long getId() {

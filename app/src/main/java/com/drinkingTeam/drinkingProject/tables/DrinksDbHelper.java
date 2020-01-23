@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import com.drinkingTeam.drinkingProject.entities.IngredientEntity;
 import com.drinkingTeam.drinkingProject.types.Drink;
 import com.drinkingTeam.drinkingProject.entities.DrinkEntity;
+import com.drinkingTeam.drinkingProject.types.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,16 +59,17 @@ public class DrinksDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DrinksReaderContract.DrinksTable.TABLE_NAME;
 
-    public Long addToFavourites(SQLiteDatabase db, DrinkEntity drinkEntity){
-
+    public Long addToFavourites(SQLiteDatabase db, Drink drink){
+        for (Ingredient i: drink.getIngredients()) {ingredientsDb.addToIngredients(db,new IngredientEntity(i,drink.getId())); }
         ContentValues values = new ContentValues();
-        values.put(DrinksReaderContract.DrinksTable._ID,drinkEntity.getId());
-        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_NAME, drinkEntity.getName());
-        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_IMAGE, drinkEntity.getImage());
-        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_RECIPE, drinkEntity.getRecipe());
-        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_GLASS, drinkEntity.getGlass());
-        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_DESCRIPTION, drinkEntity.getDescription());
-        return db.insert(DrinksReaderContract.DrinksTable.TABLE_NAME,null,values);
+        values.put(DrinksReaderContract.DrinksTable._ID,drink.getId());
+        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_NAME, drink.getName());
+        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_IMAGE, drink.getImage());
+        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_RECIPE, drink.getRecipe());
+        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_GLASS, drink.getGlass());
+        values.put(DrinksReaderContract.DrinksTable.COLUMN_NAME_DESCRIPTION, drink.getDescription());
+        Long after = db.insert(DrinksReaderContract.DrinksTable.TABLE_NAME,null,values);
+        return after;
     }
 
     public int removeFromFavourites(SQLiteDatabase db ,long id) {

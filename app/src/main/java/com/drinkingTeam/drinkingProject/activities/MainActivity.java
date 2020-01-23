@@ -28,6 +28,7 @@ import com.drinkingTeam.drinkingProject.tables.IngredientsDbHelper;
 import com.drinkingTeam.drinkingProject.tables.IngredientsReaderContract;
 import com.drinkingTeam.drinkingProject.tables.UserDbHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private static UserDbHelper userDb;
     private Context cxt;
     private static RequestQueue mQueue;
+    private boolean back;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -108,10 +110,12 @@ public class MainActivity extends AppCompatActivity {
         drinkDb = new DrinksDbHelper(this);
         favdrinks = drinkDb.getAllFavourites(drinkDb.getReadableDatabase());
         userDb = new UserDbHelper(this);
-        adapter2 = new MyListAdapter(this, R.layout.my_custom_list, favdrinks,favdrinks);
+        adapter2 = new MyListAdapter(this, R.layout.my_custom_list, favdrinks,favdrinks,true);
         listView = (ListView) findViewById(R.id.bubu);
-        adapter = new MyListAdapter(this, R.layout.my_custom_list, drinks,favdrinks);
+        adapter = new MyListAdapter(this, R.layout.my_custom_list, drinks,favdrinks,false);
         drinks = getDrinks();
+        back = getIntent().getBooleanExtra("backScreen",false);
+        if(back) navView.setSelectedItemId(R.id.navigation_dashboard);
     }
 
     // create an action bar button
@@ -156,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
                                 drink.setRecipe(json.getString(COLUMN_NAME_RECIPE));
                                 JSONArray ingredientsArray = json.getJSONArray(IngredientsReaderContract.IngredientsTable.TABLE_NAME);
                                 List<Ingredient> ingredients = new ArrayList<>();
-                                System.out.println(ingredientsArray.length());
                                 for (int j = 0; j < ingredientsArray.length(); j++) {
                                     JSONObject jsonIngredient = ingredientsArray.getJSONObject(j);
                                     Ingredient ingredient = new Ingredient();
@@ -170,7 +173,8 @@ public class MainActivity extends AppCompatActivity {
                                 addToDrinks(drink);
                             }
                             adapter.setDrinkList(drinks);
-                            listView.setAdapter(adapter);
+
+                            if(!back) listView.setAdapter(adapter);
                             if(drinks.size() == 0) {
                                 error(context, R.string.no_connection);
                             }
@@ -219,6 +223,12 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray stopShouting = response.getJSONArray("favs");
+                            System.out.println(stopShouting);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         mQueue.cancelAll(UPDATE_FAVOURITES_REQUEST_TAG);
                     }
                 }, new Response.ErrorListener() {
@@ -234,7 +244,6 @@ public class MainActivity extends AppCompatActivity {
                 for (Drink d: favdrinks) favIds.add(d.getId());
                 String your_string_json = "{ \"favourites\": " + favIds + "," +
                         "\"username\": \"" + userDb.getUser(userDb.getReadableDatabase()).get(0).getUsername() + "\"}";
-                System.out.println(your_string_json);
                 return your_string_json.getBytes();
             }
 
