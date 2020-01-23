@@ -63,7 +63,13 @@ public class LoginActivity extends AppCompatActivity {
     private EditText enterPasswordEditView;
     private Context cxt;
 
-
+    /**
+     * Sets listeners for register & login buttons
+     * sets login layout
+     * provides context to userDbHelper & drinksDbHelper
+     * starts drinksDisplays
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +108,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Checks if inputs are filled
+     * logs in if correct
+     * gets all drinks & gets user's favorites and saves them in phone's database
+     * @param login
+     * @param password
+     */
     private void contactServer(final String login, final String password){
         if(login.equals("") || password.equals("")) {
             error(cxt,R.string.login_err_clean);
@@ -190,6 +203,9 @@ public class LoginActivity extends AppCompatActivity {
         mQueue.add(request);
     }
 
+    /**
+     * sets text listeners
+     */
     private void setUpTextListeners() {
         enterUsernameEditText = findViewById(R.id.usernameLoginEditText);
         final TextView enterUsernameTextView = findViewById(R.id.usernameLoginTextView);

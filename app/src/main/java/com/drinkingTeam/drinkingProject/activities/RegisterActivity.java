@@ -46,7 +46,14 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText reEnterPasswordEditText;
     private Context cxt;
 
-
+    /**
+     *  Sets listeners for register buttons
+     *  sets login & register layouts
+     *  finds all elements in layout
+     *  checks all inputs
+     *  calls register function
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +96,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * adds user to database & automatically logs in
+     * @param username
+     * @param password
+     * @param email
+     */
     private void register(final String username,final String password,final String email) {
         final RequestQueue mQueue = Volley.newRequestQueue(this);
         String url = HOST + REGISTER;
