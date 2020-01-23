@@ -9,15 +9,15 @@ public class DrinkEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, columnDefinition = "TEXT")
     private String name;
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
-    @Column(name = "recipe", nullable = false)
+    @Column(name = "recipe", nullable = false, columnDefinition = "TEXT")
     private String recipe;
     @Column(name = "image", nullable = false)
     private byte[] image;
-    @Column(name = "glass")
+    @Column(name = "glass", columnDefinition = "TEXT")
     private String glass;
 
     public DrinkEntity(){}
